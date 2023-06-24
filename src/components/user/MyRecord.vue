@@ -1,15 +1,17 @@
 <template>
   <div class="container">
-    <Table border :columns="columns" :data="historyInfo">
+    <Table border height="600" :columns="columns" :data="historyInfo">
       <template #name="{ row }">
         <strong>{{ row.name }}</strong>
       </template>
     </Table>
-    <Page :total="total" :page-size="10" @on-change="changePage"></Page>
+    <Page :total="historyNum" :page-size="10" @on-change="changePage" show-total></Page>
   </div>
 </template>
 
 <script>
+import axios from '@/axiosInstance.js'
+
 export default {
   data() {
     return {
@@ -43,7 +45,7 @@ export default {
           price: 888,
           count: 114514,
           time: '2023年6月21日',
-        }
+        },
       ],
     }
   },
@@ -65,15 +67,17 @@ export default {
     // 请求第一页数据
     this.historyInfo = []
     const pack = this.request(1)
-    pack.forEach((e) => {
-      let obj = {}
-      obj.name = e.name
-      obj.pname = e.pname
-      obj.price = e.price
-      obj.count = e.count
-      obj.time = this.formatTimestamp(e.time)
-      that.historyInfo.push(obj)
-    })
+    if (pack) {
+      pack.forEach((e) => {
+        let obj = {}
+        obj.name = e.name
+        obj.pname = e.pname
+        obj.price = e.price
+        obj.count = e.count
+        obj.time = this.formatTimestamp(e.time)
+        that.historyInfo.push(obj)
+      })
+    }
   },
   methods: {
     changePage: (page) => {

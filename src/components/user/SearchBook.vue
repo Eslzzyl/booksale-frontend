@@ -21,7 +21,7 @@
       </template>
       <template #action="{ row, index }">
         <Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">查看</Button>
-        <Button type="primary" size="small" @click="buy(index)">购买</Button>
+        <Button type="primary" size="small" @click="putCart(index)">加购</Button>
       </template>
     </Table>
     <Page :total="bookNum" :page-size="10" @on-change="changePage" show-total></Page>
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import Button from 'view-ui-plus/src/components/button'
+import { Button } from 'view-ui-plus'
 import axios from '@/axiosInstance.js'
 
 export default {
@@ -74,7 +74,6 @@ export default {
         {
           title: '操作',
           slot: 'action',
-          width: 150,
           align: 'center'
         },
       ],
@@ -115,22 +114,24 @@ export default {
     this.currBooksInfo = []
     // 请求第一页数据
     const pack = this.request(1)
-    pack.forEach((e) => {
-      let obj = {}
-      obj.id = e.id
-      obj.name = e.name
-      obj.author = e.author
-      obj.inventory = e.inventory
-      obj.attribute = e.attribute
-      obj.type = e.type
-      obj.price = e.price
-      obj.pid = e.pid
-      obj.sid = e.sid
-      obj.pname = e.pname
-      obj.sname = e.sname
-      obj.isbn = e.isbn
-      that.currBooksInfo.push(obj)
-    })
+    if (pack) {
+      pack.forEach((e) => {
+        let obj = {}
+        obj.id = e.id
+        obj.name = e.name
+        obj.author = e.author
+        obj.inventory = e.inventory
+        obj.attribute = e.attribute
+        obj.type = e.type
+        obj.price = e.price
+        obj.pid = e.pid
+        obj.sid = e.sid
+        obj.pname = e.pname
+        obj.sname = e.sname
+        obj.isbn = e.isbn
+        that.currBooksInfo.push(obj)
+      })
+    }
   },
   methods: {
     handleSubmit(info) {
@@ -177,9 +178,28 @@ export default {
           供应商：${this.currBooksInfo[index].sname}<br>
       `})
     },
-    buy(index) {
-      let that = this
-      // 待补
+    // 加入购物车，实际上是写入window.localStorage
+    putCart(index) {
+      const bookId = this.currBooksInfo[index].id
+      const bookName = this.currBooksInfo[index].name
+      const bookPrice = this.currBooksInfo[index].price
+      let cart = window.localStorage.cart
+      if (cart) {
+        cart = JSON.parse(cart)
+        if (cart[bookId]) {
+          cart[bookId].count += 1
+        } else {
+          cart[bookId].count = 1
+          cart[bookId].name = bookName
+          cart[bookId].price = bookPrice
+        }
+      } else {
+        cart = {}
+        cart[bookId] = 1
+        cart[bookId].name = bookName
+        cart[bookId].price = bookPrice
+      }
+      window.localStorage.cart = JSON.stringify(cart)
     },
     // 向后端发出请求
     request(page, name = '', author = '', attribute = '', type = '', sname = '', pname = '') {

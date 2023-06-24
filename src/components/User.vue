@@ -14,8 +14,9 @@
             欢迎你，{{ username }}
           </div>
           <MenuItem name="1-1" @click.native="searchBook"><span>搜索书籍</span></MenuItem>
-          <MenuItem name="1-2" @click.native="lookRecord"><span>购买记录</span></MenuItem>
-          <MenuItem name="1-3" @click.native="modifyUserInfo"><span>修改用户信息</span></MenuItem>
+          <MenuItem name="1-2" @click.native="buy"><span>购物车</span></MenuItem>
+          <MenuItem name="1-3" @click.native="lookRecord"><span>购买记录</span></MenuItem>
+          <MenuItem name="1-4" @click.native="modifyUserInfo"><span>修改用户信息</span></MenuItem>
         </Submenu>
       </Menu>
       </Col>
@@ -51,9 +52,10 @@
 
 <script>
 import SearchBook from './user/SearchBook.vue'
+import Buy from './user/Buy.vue'
 import MyRecord from './user/MyRecord.vue'
 import ModifyUserInfo from './user/ModifyUserInfo.vue'
-import Button from 'view-ui-plus/src/components/button'
+import { Button } from 'view-ui-plus'
 
 import { inject } from 'vue'
 
@@ -101,6 +103,11 @@ export default {
       this.two_nav = '修改用户信息'
       this.currentView = 'ModifyUserInfo'
     },
+    buy() {
+      this.one_nav = '主页'
+      this.two_nav = '购物车'
+      this.currentView = 'Buy'
+    },
     // 用户确认登出，清除token信息并返回到登录页面
     logoutModalConfirmed() {
       this.updateToken('')
@@ -111,6 +118,7 @@ export default {
   components: {
     Button,
     SearchBook: SearchBook,
+    Buy: Buy,
     MyRecord: MyRecord,
     ModifyUserInfo: ModifyUserInfo,
   }
@@ -178,7 +186,6 @@ export default {
 #logout {
   position: absolute;
   right: 5%;
-  border-radius: 10%;
 }
 </style>
   
