@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import post from '@/axiosInstance.js'
+import axios from '@/axiosInstance.js'
 
 export default {
   data() {
@@ -70,11 +70,48 @@ export default {
       hottestInfo: [],
     }
   },
-  mounted() {
+  async mounted() {
     // 请求第一页数据
-    this.hottestInfo = []
-    const pack = this.request(1)
+    const that = this
+    const pack = await this.request(1)
     if (pack) {
+      that.updateItem(pack)
+    }
+  },
+  methods: {
+    changePage: async (page) => {
+      const that = this
+      const pack = await that.request(page)
+      if (pack) {
+        that.updateItem(pack)
+      }
+    },
+    // 向后端发出请求
+    async request(page) {
+      // 默认一页放10本书
+      let size = 10
+      let that = this
+      try {
+        const response = await axios.post('/book/hottest', {
+          params: {
+            page: page,
+            size: size
+          }
+        })
+        // 请求成功
+        if (response.data.code === 1) {
+          console.log('请求成功')
+          return response.data.data
+        } else {
+          that.$Message.error('请求失败！')
+          console.log('请求失败！')
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    updateItem(pack) {
+      this.hottestInfo = []
       pack.forEach((e) => {
         let obj = {}
         obj.id = e.id
@@ -92,51 +129,6 @@ export default {
         this.hottestInfo.push(obj)
       })
     }
-  },
-  methods: {
-    changePage: (page) => {
-      this.hottestInfo = []
-      const pack = this.request(page)
-      pack.forEach((e) => {
-        let obj = {}
-        obj.id = e.id
-        obj.name = e.name
-        obj.author = e.author
-        obj.count = e.count
-        obj.attribute = e.attribute
-        obj.type = e.type
-        obj.isbn = e.isbn
-        obj.price = e.price
-        obj.pid = e.pid
-        obj.sid = e.sid
-        obj.pname = e.pname
-        obj.sname = e.sname
-        this.hottestInfo.push(obj)
-      })
-    },
-    // 向后端发出请求
-    request(page) {
-      // 默认一页放10本书
-      let size = 10
-      let that = this
-      post('/manager/hottable',
-        {
-          page: page,
-          size: size,
-        }
-      ).then((response) => {
-        // 请求成功
-        if (response.data.code === 1) {
-          console.log('请求成功')
-          return response.data.data
-        } else {
-          that.$Message.error('请求失败！')
-          console.log('请求失败！')
-        }
-      }).catch((error) => {
-        console.log(error);
-      });
-    },
   }
 }
 </script>

@@ -11,7 +11,7 @@
 </template>
     
 <script>
-import post from '@/axiosInstance.js'
+import axios from '@/axiosInstance.js'
 
 export default {
   data() {
@@ -34,10 +34,10 @@ export default {
       publisherInfo: [],
     }
   },
-  mounted() {
+  async mounted() {
     let that = this;
     // 请求图书总量
-    post('/manager/publishernum').then((response) => {
+    axios.post('/manager/publishernum').then((response) => {
       if (response.data.code === 1) {
         that.publisherNum = response.data.data
         that.$Message.success('已获取到' + that.publisherNum + '条出版商信息')
@@ -50,9 +50,46 @@ export default {
       console.log(error);
     });
     // 请求第一页数据
-    this.publisherInfo = []
-    const pack = this.request(1)
+    const pack = await this.request(1)
     if (pack) {
+      that.updateInfo(pack)
+    }
+  },
+  methods: {
+    changePage: async (page) => {
+      const that = this
+      const pack = await that.request(page)
+      if (pack) {
+        that.updateInfo(pack)
+      }
+    },
+    // 向后端发出请求
+    async request(page) {
+      // 默认一页放10本书
+      let size = 10
+      let that = this
+      try {
+        const response = await axios.post('/manager/publisher',
+          {
+            page: page,
+            size: size,
+          }
+        )
+        // 请求成功
+        if (response.data.code === 1) {
+          console.log('请求成功')
+          return response.data.data.publisher
+        } else {
+          that.$Message.error('请求失败！')
+          console.log('请求失败！')
+        }
+      } catch (error) {
+        that.$Message.error('请求失败！')
+        console.log(error);
+      }
+    },
+    updateInfo(pack) {
+      this.publisherInfo = []
       pack.forEach((e) => {
         let obj = {}
         obj.id = e.id
@@ -61,42 +98,6 @@ export default {
         this.publisherInfo.push(obj)
       })
     }
-  },
-  methods: {
-    changePage: (page) => {
-      this.publisherInfo = []
-      const pack = this.request(page)
-      pack.forEach((e) => {
-        let obj = {}
-        obj.id = e.id
-        obj.name = e.name
-        obj.contact = e.contact
-        this.publisherInfo.push(obj)
-      })
-    },
-    // 向后端发出请求
-    request(page) {
-      // 默认一页放10本书
-      let size = 10
-      let that = this
-      post('/manager/publisher',
-        {
-          page: page,
-          size: size,
-        }
-      ).then((response) => {
-        // 请求成功
-        if (response.data.code === 1) {
-          console.log('请求成功')
-          return response.data.data
-        } else {
-          that.$Message.error('请求失败！')
-          console.log('请求失败！')
-        }
-      }).catch((error) => {
-        console.log(error);
-      });
-    },
   }
 }
 </script>

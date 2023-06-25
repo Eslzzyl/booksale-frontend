@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import post from '@/axiosInstance.js'
+import axios from '@/axiosInstance.js'
 
 export default {
   name: 'Login',
@@ -106,7 +106,7 @@ export default {
       this.updateToken('waiting')
       if (this.validateContact(contact)) {
           if (this.validateCode(that.verifyCode, that.formItem.code)) {
-            post('/login',
+            axios.post('/login',
               {
                 contact: that.formItem.contact,
                 password: that.formItem.password

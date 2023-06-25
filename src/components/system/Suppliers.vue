@@ -11,7 +11,7 @@
   </template>
       
   <script>
-  import post from '@/axiosInstance.js'
+  import axios from '@/axiosInstance.js'
   
   export default {
     data() {
@@ -38,10 +38,10 @@
         supplierInfo: [],
       }
     },
-    mounted() {
+    async mounted() {
       let that = this;
       // 请求图书总量
-      post('/manager/suppliersnum').then((response) => {
+      axios.post('/manager/suppliersnum').then((response) => {
         if (response.data.code === 1) {
           that.supplierNum = response.data.data
           that.$Message.success('已获取到' + that.supplierNum + '条供应商信息')
@@ -54,54 +54,43 @@
         console.log(error);
       });
       // 请求第一页数据
-      this.supplierInfo = []
       const pack = this.request(1)
       if (pack) {
-        pack.forEach((e) => {
-          let obj = {}
-          obj.id = e.id
-          obj.name = e.name
-          obj.address = e.address
-          obj.contact = e.contact
-          this.supplierInfo.push(obj)
-        })
+        this.updateInfo(pack)
       }
     },
     methods: {
-      changePage: (page) => {
-        this.supplierInfo = []
-        const pack = this.request(page)
-        pack.forEach((e) => {
-          let obj = {}
-          obj.id = e.id
-          obj.name = e.name
-          obj.address = e.address
-          obj.contact = e.contact
-          this.supplierInfo.push(obj)
-        })
+      changePage: async (page) => {
+        const that =this
+        const pack = await that.request(page)
+        if (pack) {
+          that.updateInfo(pack)
+        }
       },
       // 向后端发出请求
-      request(page) {
+      async request(page) {
         // 默认一页放10本书
         let size = 10
         let that = this
-        post('/manager/suppliers',
-          {
-            page: page,
-            size: size,
-          }
-        ).then((response) => {
+        try {
+          const response = await post('/manager/suppliers',
+            {
+              page: page,
+              size: size,
+            }
+          )
           // 请求成功
           if (response.data.code === 1) {
             console.log('请求成功')
-            return response.data.data
+            return response.data.data.suppliers
           } else {
             that.$Message.error('请求失败！')
             console.log('请求失败！')
           }
-        }).catch((error) => {
+        } catch (error) {
+          that.$Message.error('请求失败！')
           console.log(error);
-        });
+        }
       },
     }
   }

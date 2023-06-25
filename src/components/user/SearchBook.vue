@@ -31,7 +31,7 @@
 
 <script>
 import { Button } from 'view-ui-plus'
-import post from '@/axiosInstance.js'
+import axios from '@/axiosInstance.js'
 
 export default {
   name: 'SearchBook',
@@ -97,10 +97,10 @@ export default {
       ],
     }
   },
-  mounted() {
+  async mounted() {
     let that = this;
     // 请求图书总量
-    post('/user/booknum').then((response) => {
+    axios.post('/user/booknum').then((response) => {
       if (response.data.code === 1) {
         that.bookNum = response.data.data
         that.$Message.success('已获取到' + that.bookNum + '本图书信息')
@@ -112,26 +112,10 @@ export default {
       that.$Message.error('请求图书信息失败！')
       console.log(error);
     });
-    this.currBooksInfo = []
     // 请求第一页数据
-    const pack = this.request(1)
+    const pack = await this.request(1)
     if (pack) {
-      pack.forEach((e) => {
-        let obj = {}
-        obj.id = e.id
-        obj.name = e.name
-        obj.author = e.author
-        obj.inventory = e.inventory
-        obj.attribute = e.attribute
-        obj.type = e.type
-        obj.price = e.price
-        obj.pid = e.pid
-        obj.sid = e.sid
-        obj.pname = e.pname
-        obj.sname = e.sname
-        obj.isbn = e.isbn
-        that.currBooksInfo.push(obj)
-      })
+      this.updateInfo(pack)
     }
   },
   methods: {
@@ -142,26 +126,12 @@ export default {
       let type = info.type
       let pname = info.pname
       this.loading = true
-      this.currBooksInfo = []
 
       const pack = this.request(1, name, author, attribute, type, pname)
+      if (pack) {
+        this.updateInfo(pack)
+      }
 
-      pack.forEach((e) => {
-        let obj = {}
-        obj.id = e.id
-        obj.name = e.name
-        obj.author = e.author
-        obj.inventory = e.inventory
-        obj.attribute = e.attribute
-        obj.type = e.type
-        obj.price = e.price
-        obj.pid = e.pid
-        obj.sid = e.sid
-        obj.pname = e.pname
-        obj.sname = e.sname
-        obj.isbn = e.isbn
-        that.currBooksInfo.push(obj)
-      })
       this.loading = false
     },
     // 使用模态窗口展示书籍信息
@@ -203,42 +173,67 @@ export default {
       window.localStorage.cart = JSON.stringify(cart)
     },
     // 向后端发出请求
-    request(page, name = '', author = '', attribute = '', type = '', sname = '', pname = '') {
+    async request(page, name = '', author = '', attribute = '', type = '', sname = '', pname = '') {
       // 默认一页放10本书
       let size = 10
       var that = this
-      post('/user/searchBook',
-        {
-          name: name,
-          author: author,
-          attribute: attribute,
-          type: type,
-          sname: sname,
-          pname: pname,
-          page: page,
-          size: size,
-        }
-      ).then((response) => {
+      try {
+        let response = await axios.post('/user/searchBook',
+          {
+            name: name,
+            author: author,
+            attribute: attribute,
+            type: type,
+            sname: sname,
+            pname: pname,
+            page: page,
+            size: size,
+          }
+        );
         // 请求成功
         if (response.data.code === 1) {
           console.log('请求成功，请求到' + response.data.data.length + '本书目信息')
-          return response.data.data
+          return response.data.data.book
         } else {
           that.$Message.error('请求失败！')
           console.log('请求失败！')
         }
-      }).catch((error) => {
+      } catch (error) {
         console.log(error);
-      });
+      }
     },
-    changePage: (page) => {
+    changePage: async (page) => {
+      let that = this
       let name = this.currBooksInfo.name
       let author = this.currBooksInfo.author
       let attribute = this.currBooksInfo.attribute
       let type = this.currBooksInfo.type
       let pname = this.currBooksInfo.pname
       let sname = ''    // 用户无需关心供应商
-      this.request(page, name, author, attribute, type, sname, pname)
+
+      let pack = await that.request(page, name, author, attribute, type, sname, pname)
+      if (pack) {
+        that.updateInfo(pack)
+      }
+    },
+    updateInfo(pack) {
+      this.currBooksInfo = []
+      pack.forEach((e) => {
+        let obj = {}
+        obj.id = e.id
+        obj.name = e.name
+        obj.author = e.author
+        obj.inventory = e.inventory
+        obj.attribute = e.attribute
+        obj.type = e.type
+        obj.price = e.price
+        obj.pid = e.pid
+        obj.sid = e.sid
+        obj.pname = e.pname
+        obj.sname = e.sname
+        obj.isbn = e.isbn
+        this.currBooksInfo.push(obj)
+      })
     }
   }
 }

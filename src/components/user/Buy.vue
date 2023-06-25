@@ -30,7 +30,7 @@
 <script>
 import { Button } from 'view-ui-plus'
 import { Icon } from 'view-ui-plus'
-import post from '@/axiosInstance.js'
+import axios from '@/axiosInstance.js'
 
 export default {
   data() {
@@ -92,7 +92,7 @@ export default {
         });
       }
 
-      post("/user/purchase", {
+      axios.post("/user/purchase", {
         posts
       }).then(response => {
         if (response.data.code === 1) {

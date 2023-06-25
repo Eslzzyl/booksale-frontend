@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <h2>用户管理</h2>
     <Table border height="550" :columns="columns" :data="currCart">
       <template #name="{ row }">
         <strong>{{ row.name }}</strong>
@@ -13,7 +14,7 @@
 </template>
 
 <script>
-import post from '@/axiosInstance.js'
+import axios from '@/axiosInstance.js'
 
 export default {
   data() {

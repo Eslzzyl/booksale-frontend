@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import post from '@/axiosInstance.js'
+import axios from '@/axiosInstance.js'
 
 export default {
     data() {
