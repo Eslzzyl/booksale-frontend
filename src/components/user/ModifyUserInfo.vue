@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import axios from '@/axiosInstance.js'
+import post from '@/axiosInstance.js'
 
 export default {
   data() {
@@ -138,7 +138,7 @@ export default {
         that.$Message.error('两次输入的密码不匹配！')
         return
       }
-      axios.post('/user/userChange',
+      post('/user/userChange',
         {
           type: 1,  // 用户
           contact: that.formItem.contact,

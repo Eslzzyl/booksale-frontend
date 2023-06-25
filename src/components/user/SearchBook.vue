@@ -31,7 +31,7 @@
 
 <script>
 import { Button } from 'view-ui-plus'
-import axios from '@/axiosInstance.js'
+import post from '@/axiosInstance.js'
 
 export default {
   name: 'SearchBook',
@@ -100,7 +100,7 @@ export default {
   mounted() {
     let that = this;
     // 请求图书总量
-    axios.post('/user/booknum').then((response) => {
+    post('/user/booknum').then((response) => {
       if (response.data.code === 1) {
         that.bookNum = response.data.data
         that.$Message.success('已获取到' + that.bookNum + '本图书信息')
@@ -207,7 +207,7 @@ export default {
       // 默认一页放10本书
       let size = 10
       var that = this
-      axios.get('/user/searchBook',
+      post('/user/searchBook',
         {
           name: name,
           author: author,

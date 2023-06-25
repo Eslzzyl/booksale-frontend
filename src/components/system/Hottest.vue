@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import axios from '@/axiosInstance.js'
+import post from '@/axiosInstance.js'
 
 export default {
   data() {
@@ -119,7 +119,7 @@ export default {
       // 默认一页放10本书
       let size = 10
       let that = this
-      axios.post('/manager/hottable',
+      post('/manager/hottable',
         {
           page: page,
           size: size,

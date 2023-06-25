@@ -19,5 +19,17 @@ API.interceptors.request.use(config => {
 	return Promise.reject(error)
 })
 
+// 导出同步的post方法
+const post = (url, params) => {
+	return new Promise((resolve, reject) => {
+		API.post(url, QS.stringify(params))
+			.then(res => {
+				resolve(res.data);
+			}).catch(err => {
+				reject(err.data)
+			})
+	});
+}
+
 //导出我们建立的axios实例模块，ES6 export用法
-export default API
+export default post

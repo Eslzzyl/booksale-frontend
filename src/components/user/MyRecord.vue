@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import axios from '@/axiosInstance.js'
+import post from '@/axiosInstance.js'
 
 export default {
   data() {
@@ -53,7 +53,7 @@ export default {
   mounted() {
     let that = this;
     // 请求图书总量
-    axios.post('/user/purchasenum').then((response) => {
+    post('/user/purchasenum').then((response) => {
       if (response.data.code === 1) {
         that.historyNum = response.data.data
         that.$Message.success('已获取到' + that.historyNum + '条购买记录信息')
@@ -100,7 +100,7 @@ export default {
       let size = 10
       let that = this
       let contact = window.localStorage.getItem('contact')
-      axios.get('/user/userHistory',
+      post('/user/userHistory',
         {
           contact: contact,
           page: page,

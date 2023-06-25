@@ -86,7 +86,7 @@ import { Button } from 'view-ui-plus'
 import { RadioGroup } from 'view-ui-plus'
 import { Radio } from 'view-ui-plus'
 
-import axios from '@/axiosInstance.js'
+import post from '@/axiosInstance.js'
 
 export default {
   name: "HelloWorld",
@@ -147,7 +147,7 @@ export default {
         return
       }
       if (this.validateContact(contact)) {
-        axios.post('/register',
+        post('/register',
           {
             type: 1,  // 用户
             contact: that.formItem.contact,

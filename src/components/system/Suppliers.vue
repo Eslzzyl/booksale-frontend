@@ -11,7 +11,7 @@
   </template>
       
   <script>
-  import axios from '@/axiosInstance.js'
+  import post from '@/axiosInstance.js'
   
   export default {
     data() {
@@ -41,7 +41,7 @@
     mounted() {
       let that = this;
       // 请求图书总量
-      axios.post('/manager/suppliersnum').then((response) => {
+      post('/manager/suppliersnum').then((response) => {
         if (response.data.code === 1) {
           that.supplierNum = response.data.data
           that.$Message.success('已获取到' + that.supplierNum + '条供应商信息')
@@ -85,7 +85,7 @@
         // 默认一页放10本书
         let size = 10
         let that = this
-        axios.post('/manager/suppliers',
+        post('/manager/suppliers',
           {
             page: page,
             size: size,

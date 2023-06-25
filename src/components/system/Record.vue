@@ -106,7 +106,7 @@ export default {
         // 请求成功
         if (response.data.code === 1) {
           console.log('请求成功')
-          return response.data.data
+          return response.data.data.purchase
         } else {
           that.$Message.error('请求失败！')
           console.log('请求失败！')
