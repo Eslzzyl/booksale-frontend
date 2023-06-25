@@ -99,7 +99,7 @@ export default {
   mounted() {
     let that = this;
     // 请求图书总量
-    axios.get('/user/booknum').then((response) => {
+    axios.post('/user/booknum').then((response) => {
       if (response.data.code === 1) {
         that.bookNum = response.data.data
         that.$Message.success('已获取到' + that.bookNum + '本图书信息')

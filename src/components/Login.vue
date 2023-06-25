@@ -56,7 +56,6 @@
 </template>
 
 <script>
-import { inject } from 'vue'
 import axios from '@/axiosInstance.js'
 
 export default {
@@ -96,20 +95,6 @@ export default {
       useVerifyCode: false,
     }
   },
-  setup() {
-    // 接收全局变量
-    const token = inject('token')
-
-    // 更新全局变量
-    const updateToken = (value) => {
-      token.value = value;
-    }
-
-    return {
-      token,
-      updateToken,
-    }
-  },
   mounted() {
     this.createCode()
   },
@@ -130,11 +115,11 @@ export default {
               console.log(response)
               if (response.data.code === 1) {
                 this.$Message.success('登录成功!')
-                let type = response.data.data.type
-                let name = response.data.data.name
-                let sex = response.data.data.sex
-                let age = response.data.data.age
-                let token = response.data.data.token
+                let type = response.data.data.account.type
+                let name = response.data.data.account.name
+                let sex = response.data.data.account.sex
+                let age = response.data.data.account.age
+                let token = response.data.data.jwt
                 window.localStorage.setItem('contact', contact)
                 window.localStorage.setItem('type', type)
                 window.localStorage.setItem('name', name)
@@ -148,7 +133,7 @@ export default {
                 } else if (msg === 'manager') {   // 管理员
                   this.$router.replace({ path: '/manager' })
                 } else {
-                  this.$Message.error('服务端返回了一个位置的用户类型：' + msg)
+                  this.$Message.error('服务端返回了一个未知的用户类型：' + msg)
                   console.log('服务端返回了一个位置的用户类型：' + msg)
                 }
               } else {
@@ -197,6 +182,9 @@ export default {
     },
     register() {
       this.$router.replace('/register')
+    },
+    updateToken(value) {
+      window.localStorage.setItem('token', value)
     }
   }
 }
