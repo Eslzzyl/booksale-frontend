@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <h2>搜索书籍</h2>
     <Form ref="bookInfoInput" :model="bookInfoInput" inline>
       <span class="note">输入你希望查询的书籍信息（所有字段均可为空）</span>
       <FormItem prop="account">
@@ -243,3 +244,10 @@ export default {
 }
 </script>
 
+<style scoped>
+h2 {
+  color: #2D8CF0;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+</style>

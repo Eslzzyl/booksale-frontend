@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <h2>购买记录</h2>
     <Table border height="600" :columns="columns" :data="historyInfo">
       <template #name="{ row }">
         <strong>{{ row.name }}</strong>
@@ -128,3 +129,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+h2 {
+  color: #2D8CF0;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+</style>

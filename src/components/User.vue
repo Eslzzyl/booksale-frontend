@@ -10,8 +10,10 @@
         </div>
         <Submenu name="1">
           <div class="welcome">
-            <Icon type="ios-navigate"></Icon>
-            欢迎你，{{ username }}
+            <Space>
+              <Icon type="ios-navigate" />
+              <span>欢迎你，{{ username }}</span>
+            </Space>
           </div>
           <MenuItem name="1-1" @click.native="searchBook"><span>搜索书籍</span></MenuItem>
           <MenuItem name="1-2" @click.native="buy"><span>购物车</span></MenuItem>

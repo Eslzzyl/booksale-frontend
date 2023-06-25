@@ -6,15 +6,17 @@
       <Col span="5" class="layout-menu-left">
       <Menu active-name="1-1" theme="dark" width="auto" :open-names="['1']">
         <div class="layout-logo-left">
-          <h2 style="color:white;">在线书城</h2>
+          <h2 style="color:white;">在线书城-管理端</h2>
         </div>
         <Submenu name="1">
           <div class="welcome">
-            <Icon type="ios-navigate"></Icon>
-            欢迎你，管理员 {{ username }}
+            <Space>
+              <Icon type="ios-navigate" />
+              <span>欢迎你，管理员 {{ username }}</span>
+            </Space>
           </div>
           <MenuItem name="1-1" @click.native="manageBook"><span>图书管理</span></MenuItem>
-          <MenuItem name="1-2" @click.native="lookRecord"><span>购买记录</span></MenuItem>
+          <MenuItem name="1-2" @click.native="lookRecord"><span>销售记录</span></MenuItem>
         </Submenu>
       </Menu>
       </Col>
