@@ -28,7 +28,11 @@
         <Breadcrumb>
           <BreadcrumbItem href="#">{{ one_nav }}</BreadcrumbItem>
           <BreadcrumbItem>{{ two_nav }}</BreadcrumbItem>
-          <Button id="logout" type="primary" @click="logout()">退出登录</Button>
+          <Button id="system" @click="system">转到系统管理</Button>
+          <Button id="logout" type="primary" @click="logoutModal = true">退出登录</Button>
+          <Modal v-model="logoutModal" title="确认登出" @on-ok="logoutModalConfirmed">
+            <p>你真的要登出吗？</p>
+          </Modal>
         </Breadcrumb>
       </div>
       <div class="layout-content">
@@ -48,7 +52,8 @@
 
 <script>
 import ManageBook from './manager/ManageBook.vue'
-import Button from 'view-ui-plus/src/components/button'
+import SellRecord from './manager/SellRecord.vue'
+import { Button } from 'view-ui-plus'
 
 export default {
   name: 'Manager',
@@ -56,31 +61,43 @@ export default {
     return {
       username: '',
       one_nav: '主页',
-      two_nav: '图书管理',
-      currentView: 'ManageBook'
+      two_nav: '书籍管理',
+      currentView: 'ManageBook',
+      logoutModal: false,
     }
   },
   mounted() {
     this.username = window.localStorage.getItem('contact')
   },
   methods: {
+    updateToken(value) {
+      window.localStorage.setItem('token', value)
+    },
     manageBook() {
       this.one_nav = '主页'
-      this.two_nav = '图书管理'
+      this.two_nav = '书籍管理'
       this.currentView = 'ManageBook'
     },
     lookRecord() {
       this.one_nav = '主页'
-      this.two_nav = '购买记录'
-      this.currentView = 'MyRecord'
+      this.two_nav = '销售记录'
+      this.currentView = 'SellRecord'
     },
-    logout() {
+    // 用户确认登出，清除token信息并返回到登录页面
+    logoutModalConfirmed() {
+      this.updateToken('')
+      this.$Message.info('已登出')
       this.$router.replace('/')
+    },
+    // 转到系统管理
+    system() {
+      this.$router.replace('/system')
     }
   },
   components: {
     Button,
     ManageBook: ManageBook,
+    SellRecord: SellRecord,
   }
 }
 </script>
@@ -142,10 +159,14 @@ export default {
   height: 50px;
 }
 
+#system {
+  position: absolute;
+  right: 15%;
+}
+
 /* 退出按钮 */
 #logout {
   position: absolute;
   right: 5%;
-  border-radius: 10%;
 }
 </style>

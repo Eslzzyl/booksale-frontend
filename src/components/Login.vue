@@ -121,6 +121,8 @@ export default {
                 let age = response.data.data.account.age
                 let token = response.data.data.jwt
                 window.localStorage.setItem('contact', contact)
+                // type == 1 用户
+                // type == 2 管理员
                 window.localStorage.setItem('type', type)
                 window.localStorage.setItem('name', name)
                 window.localStorage.setItem('sex', sex)

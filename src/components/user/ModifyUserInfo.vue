@@ -138,7 +138,7 @@ export default {
         that.$Message.error('两次输入的密码不匹配！')
         return
       }
-      axios.post('/userChange',
+      axios.post('/user/userChange',
         {
           type: 1,  // 用户
           contact: that.formItem.contact,

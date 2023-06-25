@@ -6,34 +6,33 @@
       <Col span="5" class="layout-menu-left">
       <Menu active-name="1-1" theme="dark" width="auto" :open-names="['1']">
         <div class="layout-logo-left">
-          <h2 style="color:white;">在线书城</h2>
+          <h2 style="color:white;">在线书城-系统管理</h2>
         </div>
         <Submenu name="1">
           <div class="welcome">
             <Space>
               <Icon type="ios-navigate" />
-              <span>欢迎你，{{ username }}</span>
+              <span>欢迎你，系统管理员 {{ username }}</span>
             </Space>
           </div>
-          <MenuItem name="1-1" @click.native="searchBook"><span>搜索书籍</span></MenuItem>
-          <MenuItem name="1-2" @click.native="buy"><span>购物车</span></MenuItem>
-          <MenuItem name="1-3" @click.native="lookRecord"><span>购买记录</span></MenuItem>
-          <MenuItem name="1-4" @click.native="modifyUserInfo"><span>修改用户信息</span></MenuItem>
+          <MenuItem name="1-1" @click.native="getRecords"><span>购买记录表</span></MenuItem>
+          <MenuItem name="1-2" @click.native="getBooks"><span>书籍表</span></MenuItem>
+          <MenuItem name="1-3" @click.native="getSuppliers"><span>供应商表</span></MenuItem>
+          <MenuItem name="1-4" @click.native="getPublishers"><span>出版社表</span></MenuItem>
+          <MenuItem name="1-5" @click.native="getHottest"><span>热门书籍表</span></MenuItem>
         </Submenu>
       </Menu>
       </Col>
       <!--右侧的内容页-->
       <Col span="19">
-      <!--这个header没什么用，先注释了-->
-      <!--<div class="layout-header"></div>-->
       <div class="layout-breadcrumb">
         <Breadcrumb>
           <BreadcrumbItem href="#">{{ one_nav }}</BreadcrumbItem>
           <BreadcrumbItem>{{ two_nav }}</BreadcrumbItem>
+          <Button id="manage" @click="manage">转到后台管理</Button>
           <Button id="logout" type="primary" @click="logoutModal = true">退出登录</Button>
           <Modal v-model="logoutModal" title="确认登出" @on-ok="logoutModalConfirmed">
             <p>你真的要登出吗？</p>
-            <p>登出后，你的购物车将被清空。</p>
           </Modal>
         </Breadcrumb>
       </div>
@@ -41,7 +40,6 @@
         <div class="layout-content-main">
           <template id="searchBook"></template>
           <template id="myRecord"></template>
-          <template id="modifyUserInfo"></template>
           <component :is="currentView"></component>
         </div>
       </div>
@@ -52,51 +50,36 @@
     </Row>
   </div>
 </template>
-
+  
 <script>
-import SearchBook from './user/SearchBook.vue'
-import Buy from './user/Buy.vue'
-import MyRecord from './user/MyRecord.vue'
-import ModifyUserInfo from './user/ModifyUserInfo.vue'
+import Books from './system/Books.vue'
+import Record from './system/Record.vue'
+import Suppliers from './system/Suppliers.vue'
+import Publishers from './system/Publishers.vue'
+import Hottest from './system/Hottest.vue'
 import { Button } from 'view-ui-plus'
 
 export default {
-  name: 'Reader',
+  name: 'Manager',
   data() {
     return {
       username: '',
       one_nav: '主页',
-      two_nav: '搜索书籍',
-      currentView: 'SearchBook',
+      two_nav: '购买记录表',
+      currentView: 'Record',
       logoutModal: false,
     }
   },
   mounted() {
-    this.username = window.localStorage.getItem('name')
+    this.username = window.localStorage.getItem('contact')
   },
   methods: {
     updateToken(value) {
       window.localStorage.setItem('token', value)
     },
-    searchBook() {
-      this.one_nav = '主页'
-      this.two_nav = '搜索书籍'
-      this.currentView = 'SearchBook'
-    },
-    lookRecord() {
-      this.one_nav = '主页'
-      this.two_nav = '购买记录'
-      this.currentView = 'MyRecord'
-    },
-    modifyUserInfo() {
-      this.one_nav = '主页'
-      this.two_nav = '修改用户信息'
-      this.currentView = 'ModifyUserInfo'
-    },
-    buy() {
-      this.one_nav = '主页'
-      this.two_nav = '购物车'
-      this.currentView = 'Buy'
+    // 转到后台管理
+    manage() {
+      this.$router.replace('/manager')
     },
     // 用户确认登出，清除token信息并返回到登录页面
     logoutModalConfirmed() {
@@ -104,17 +87,49 @@ export default {
       this.$Message.info('已登出')
       this.$router.replace('/')
     },
+    getSuppliers() {
+      this.one_nav = '主页'
+      this.two_nav = '书籍管理'
+      this.currentView = 'Suppliers'
+    },
+    getBooks() {
+      this.one_nav = '主页'
+      this.two_nav = '书表'
+      this.currentView = 'Books'
+    },
+    getPublishers() {
+      this.one_nav = '主页'
+      this.two_nav = '出版商表'
+      this.currentView = 'Publishers'
+    },
+    getRecords() {
+      this.one_nav = '主页'
+      this.two_nav = '销售记录'
+      this.currentView = 'Record'
+    },
+    getHottest() {
+      this.one_nav = '主页'
+      this.two_nav = '热门书籍'
+      this.currentView = 'Hottest'
+    },
+  },
+  // 用户确认登出，清除token信息并返回到登录页面
+  logoutModalConfirmed() {
+    this.updateToken('')
+    this.$Message.info('已登出')
+    this.$router.replace('/')
   },
   components: {
     Button,
-    SearchBook: SearchBook,
-    Buy: Buy,
-    MyRecord: MyRecord,
-    ModifyUserInfo: ModifyUserInfo,
+    Record,
+    Books,
+    Suppliers,
+    Publishers,
+    Hottest,
   }
 }
 </script>
-
+  
 <style scoped>
 .layout {
   border: 1px solid #d7dde4;
@@ -176,6 +191,12 @@ export default {
 #logout {
   position: absolute;
   right: 5%;
+}
+
+/* 后台管理按钮 */
+#manage {
+  position: absolute;
+  right: 15%;
 }
 </style>
   
