@@ -15,7 +15,7 @@
               <span>欢迎你，管理员 {{ username }}</span>
             </Space>
           </div>
-          <MenuItem name="1-1" @click.native="manageBook"><span>图书管理</span></MenuItem>
+          <MenuItem name="1-1" @click.native="manageBook"><span>书籍管理</span></MenuItem>
           <MenuItem name="1-2" @click.native="lookRecord"><span>销售记录</span></MenuItem>
         </Submenu>
       </Menu>
