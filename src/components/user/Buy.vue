@@ -98,7 +98,7 @@ export default {
         posts.push({
           bid: this.currCart[i].id,
           num: this.currCart[i].count,
-          uid: this.localStorage.getItem("contact")
+          uid: window.localStorage.getItem("contact")
         });
       }
 

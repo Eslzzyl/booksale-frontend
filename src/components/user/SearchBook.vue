@@ -97,7 +97,7 @@ export default {
       ],
     }
   },
-  mounted() {
+  async mounted() {
     let that = this;
     // 请求图书总量
     axios.post('/user/booknum').then((response) => {
@@ -113,7 +113,7 @@ export default {
       console.log(error);
     });
     // 请求第一页数据
-    const pack = that.request(1)
+    const pack = await that.request(1)
     if (pack) {
       that.updateInfo(pack)
     }
@@ -159,6 +159,10 @@ export default {
         // 查找cart中是否已经有记录
         for (let i = 0; i < cart.length; i++) {
           if (cart[i].id === bookId) {
+            if (cart[i] >= this.currBooksInfo[index].inventory) {
+              this.$Message.error('库存不足，无法加购')
+              return
+            }
             cart[i].count += 1
             window.localStorage.setItem('cart', JSON.stringify(cart))
             this.$Message.success('加购成功')
