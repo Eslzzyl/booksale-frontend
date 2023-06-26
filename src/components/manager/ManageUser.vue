@@ -107,7 +107,7 @@ export default {
         obj.contact = e.contact
         obj.name = e.name
         obj.type = e.type
-        obj.sex = e.sex
+        obj.sex = (e.sex === '') ? '保密' : e.sex
         obj.age = e.age
         this.userInfo.push(obj)
       })
