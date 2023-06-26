@@ -36,7 +36,7 @@ export default {
         {
           title: '价格',
           key: 'price',
-          width: 80
+          width: 80,
           resizable: true
         },
         {

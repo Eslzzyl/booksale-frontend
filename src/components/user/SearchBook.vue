@@ -144,8 +144,11 @@ export default {
     // 请求第一页数据
     const pack = await that.request(1)
     if (pack) {
-      that.updateInfo(pack)
-    }
+        const books = pack.books
+        const num = pack.num
+        that.bookNum = num
+        that.updateInfo(books)
+      }
   },
   methods: {
     async handleSubmit(info) {
