@@ -23,6 +23,10 @@ export default {
       userInfo: [],
       columns: [
         {
+          title: '用户类型',
+          key: 'type'
+        },
+        {
           title: '账号',
           key: 'contact'
         },
@@ -31,8 +35,12 @@ export default {
           key: "name"
         },
         {
-          title: "联系方式",
-          key: "contact"
+          title: '性别',
+          key: 'sex'
+        },
+        {
+          title: '年龄',
+          key: 'age'
         },
         {
           title: "操作",
@@ -41,6 +49,10 @@ export default {
         },
       ],
     }
+  },
+  mounted() {
+    const that = this
+    
   }
 }
 </script>

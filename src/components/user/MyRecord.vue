@@ -52,22 +52,10 @@ export default {
   },
   async mounted() {
     let that = this;
-    // 请求图书总量
-    axios.post('/user/purchasenum').then((response) => {
-      if (response.data.code === 1) {
-        that.historyNum = response.data.data
-        that.$Message.success('已获取到' + that.historyNum + '条购买记录信息')
-      } else {
-        that.$Message.error('请求购买记录信息失败！')
-        console.log('请求购买记录信息失败！')
-      }
-    }).catch((error) => {
-      that.$Message.error('请求购买记录信息失败！')
-      console.log(error);
-    });
     // 请求第一页数据
     this.historyInfo = []
-    const pack = await this.request(1)
+    const data = await that.request(1)
+    const pack = data.purchase
     if (pack) {
       this.updateInfo(pack)
     }
@@ -75,9 +63,17 @@ export default {
   methods: {
     async changePage (page) {
       let that = this
-      const pack = await that.request(page)
+      const data = await that.request(page)
+      const pack = data.purchase
+      const num = data.historynum
       if (pack) {
         that.updateInfo(pack)
+      }
+      if (num) {
+        that.historyNum = num
+        that.$Message.success('获取到了' + num + '条购买记录')
+      } else {
+        that.$Message.error('未能获取到购买记录！')
       }
     },
     // 向后端发出请求
@@ -97,7 +93,7 @@ export default {
         // 请求成功
         if (response.data.code === 1) {
           console.log('请求成功')
-          return response.data.data.purchase
+          return response.data.data
         } else {
           that.$Message.error('请求失败！')
           console.log('请求失败！')
