@@ -97,7 +97,7 @@ export default {
       ],
     }
   },
-  async mounted() {
+  mounted() {
     let that = this;
     // 请求图书总量
     axios.post('/user/booknum').then((response) => {
@@ -113,7 +113,18 @@ export default {
       console.log(error);
     });
     // 请求第一页数据
-    const pack = await this.request(1)
+    let pack = []
+    axios.post('user/book').then((response) => {
+      if (response.data.code === 1) {
+        pack = response.data.data.book
+      } else {
+        that.$Message.error('请求图书信息失败！')
+        console.log('请求图书信息失败！')
+      }
+    }).catch((error) => {
+      that.$Message.error('请求图书信息失败！')
+      console.log(error);
+    })
     if (pack) {
       this.updateInfo(pack)
     }
@@ -128,7 +139,7 @@ export default {
       let pname = info.pname
       that.loading = true
 
-      const pack = await tthathis.request(1, name, author, attribute, type, pname)
+      const pack = await that.request(1, name, author, attribute, type, pname)
       if (pack) {
         that.updateInfo(pack)
       }
@@ -146,7 +157,6 @@ export default {
           类型：${this.currBooksInfo[index].type}<br>
           出版社：${this.currBooksInfo[index].pname}<br>
           价格：${this.currBooksInfo[index].price}<br>
-          供应商：${this.currBooksInfo[index].sname}<br>
       `})
     },
     // 加入购物车，实际上是写入window.localStorage
@@ -154,23 +164,28 @@ export default {
       const bookId = this.currBooksInfo[index].id
       const bookName = this.currBooksInfo[index].name
       const bookPrice = this.currBooksInfo[index].price
-      let cart = window.localStorage.cart
+      let cart = window.localStorage.getItem('cart')
       if (cart) {
         cart = JSON.parse(cart)
         if (cart[bookId]) {
           cart[bookId].count += 1
         } else {
-          cart[bookId].count = 1
-          cart[bookId].name = bookName
-          cart[bookId].price = bookPrice
+          cart[bookId] = {
+            count: 1,
+            name: bookName,
+            price: bookPrice
+          }
         }
       } else {
-        cart = {}
-        cart[bookId] = 1
-        cart[bookId].name = bookName
-        cart[bookId].price = bookPrice
+        cart = []
+        // 向cart中添加一条记录
+        cart[bookId] = {
+          count: 1,
+          name: bookName,
+          price: bookPrice
+        }
       }
-      window.localStorage.cart = JSON.stringify(cart)
+      window.localStorage.setItem('cart', JSON.stringify(cart))
     },
     // 向后端发出请求
     async request(page, name = '', author = '', attribute = '', type = '', sname = '', pname = '') {
@@ -193,7 +208,7 @@ export default {
         // 请求成功
         if (response.data.code === 1) {
           console.log('请求成功，请求到' + response.data.data.length + '本书目信息')
-          return response.data.data.book
+          return response.data.data
         } else {
           that.$Message.error('请求失败！')
           console.log('请求失败！')
@@ -203,7 +218,7 @@ export default {
       }
     },
     async changePage (page) {
-      let that = this
+      const that = this
       let name = that.bookInfoInput.name
       let author = that.bookInfoInput.author
       let attribute = that.bookInfoInput.attribute
