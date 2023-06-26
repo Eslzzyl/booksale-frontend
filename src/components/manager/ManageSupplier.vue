@@ -13,7 +13,7 @@
         <Button type="error" size="small" @click="remove(index)">删除</Button>
       </template>
     </Table>
-    <Page :total="supplierNum" :page-size="10" @on-change="changePage" show-total></Page>
+    <Page :total="supplierNum" :page-size="10" @on-change="changePage" show-total show-elevator></Page>
   </div>
 </template>
   
@@ -28,24 +28,29 @@ export default {
       columns: [
         {
           title: 'ID',
-          key: 'id'
+          key: 'id',
+          resizable: true
         },
         {
           title: '供应商',
-          key: 'name'
+          key: 'name',
+          resizable: true
         },
         {
           title: "联系方式",
-          key: "contact"
+          key: "contact",
+          resizable: true
         },
         {
           title: '地址',
-          key: 'address'
+          key: 'address',
+          resizable: true
         },
         {
           title: "操作",
           slot: "action",
-          align: "center"
+          align: "center",
+          resizable: true
         },
       ],
     }

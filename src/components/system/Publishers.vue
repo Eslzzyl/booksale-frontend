@@ -6,7 +6,7 @@
         <strong>{{ row.name }}</strong>
       </template>
     </Table>
-    <Page :total="publisherNum" :page-size="10" @on-change="changePage" show-total></Page>
+    <Page :total="publisherNum" :page-size="10" @on-change="changePage" show-total show-elevator></Page>
   </div>
 </template>
     
@@ -20,15 +20,18 @@ export default {
       columns: [
         {
           title: '出版商ID',
-          key: 'id'
+          key: 'id',
+          resizable: true
         },
         {
           title: '出版商',
-          key: 'name'
+          key: 'name',
+          resizable: true
         },
         {
           title: '联系方式',
-          key: 'contact'
+          key: 'contact',
+          resizable: true
         }
       ],
       publisherInfo: [],

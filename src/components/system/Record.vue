@@ -6,7 +6,7 @@
         <strong>{{ row.name }}</strong>
       </template>
     </Table>
-    <Page :total="recordNum" :page-size="10" @on-change="changePage" show-total></Page>
+    <Page :total="recordNum" :page-size="10" @on-change="changePage" show-total show-elevator></Page>
   </div>
 </template>
     
@@ -20,27 +20,34 @@ export default {
       columns: [
         {
           title: 'ID',
-          key: 'id'
+          key: 'id',
+          resizable: true
         },
         {
           title: '用户ID',
-          key: 'uid'
+          key: 'uid',
+          resizable: true
         },
         {
           title: '书籍ID',
-          key: 'bid'
+          key: 'bid',
+          resizable: true
         },
         {
           title: '价格',
-          key: 'price'
+          key: 'price',
+          width: 80
+          resizable: true
         },
         {
           title: '购买数量',
-          key: 'count'
+          key: 'count',
+          resizable: true
         },
         {
           title: '购买时间',
-          key: 'time'
+          key: 'time',
+          resizable: true
         }
       ],
       recordInfo: [],

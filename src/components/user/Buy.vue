@@ -44,19 +44,24 @@ export default {
       columns: [
         {
           title: '书籍ID',
-          key: 'id'
+          key: 'id',
+          resizable: true
         },
         {
           title: "书名",
-          key: "name"
+          key: "name",
+          resizable: true
         },
         {
           title: "单价",
-          key: "price"
+          key: "price",
+          width: 80,
+          resizable: true
         },
         {
           title: "购买数量",
-          key: "count"
+          key: "count",
+          resizable: true
         },
         {
           title: "操作",

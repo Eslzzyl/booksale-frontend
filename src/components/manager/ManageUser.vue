@@ -9,7 +9,7 @@
         <Button type="error" size="small" style="margin-right: 5px" @click="remove(index)">删除用户</Button>
       </template>
     </Table>
-    <Page :total="userNum" :page-size="10" @on-change="changePage" show-total></Page>
+    <Page :total="userNum" :page-size="10" @on-change="changePage" show-total show-elevator></Page>
   </div>
 </template>
 
@@ -24,23 +24,28 @@ export default {
       columns: [
         {
           title: '用户类型',
-          key: 'type'
+          key: 'type',
+          resizable: true
         },
         {
           title: '账号',
-          key: 'contact'
+          key: 'contact',
+          resizable: true
         },
         {
           title: "用户名",
-          key: "name"
+          key: "name",
+          resizable: true
         },
         {
           title: '性别',
-          key: 'sex'
+          key: 'sex',
+          resizable: true
         },
         {
           title: '年龄',
-          key: 'age'
+          key: 'age',
+          resizable: true
         },
         {
           title: "操作",
@@ -118,6 +123,7 @@ export default {
       axios.post('/manager/user/delete', {user}).then((response) => {
         if (response.data.code === 1) {
           this.userInfo.splice(index, 1)
+          this.userNum -= 1
           this.$Message.success('删除用户成功！')
         } else {
           this.$Message.error('删除用户失败！')

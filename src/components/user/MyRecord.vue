@@ -20,23 +20,29 @@ export default {
       columns: [
         {
           title: '书名',
-          key: 'name'
+          key: 'name',
+          resizable: true
         },
         {
           title: '出版社',
-          key: 'pname'
+          key: 'pname',
+          resizable: true
         },
         {
           title: '价格',
-          key: 'price'
+          key: 'price',
+          width: 80,
+          resizable: true
         },
         {
           title: '购买数量',
-          key: 'count'
+          key: 'count',
+          resizable: true
         },
         {
           title: '购买时间',
-          key: 'time'
+          key: 'time',
+          resizable: true
         },
       ],
       historyInfo: [

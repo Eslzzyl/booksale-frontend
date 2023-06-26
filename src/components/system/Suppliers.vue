@@ -6,7 +6,7 @@
           <strong>{{ row.name }}</strong>
         </template>
       </Table>
-      <Page :total="supplierNum" :page-size="10" @on-change="changePage" show-total></Page>
+      <Page :total="supplierNum" :page-size="10" @on-change="changePage" show-total show-elevator></Page>
     </div>
   </template>
       
@@ -20,19 +20,23 @@
         columns: [
           {
             title: '供应商ID',
-            key: 'id'
+            key: 'id',
+          resizable: true
           },
           {
             title: '供应商',
-            key: 'name'
+            key: 'name',
+          resizable: true
           },
           {
             title: '地址',
-            key: 'address'
+            key: 'address',
+          resizable: true
           },
           {
             title: '联系方式',
-            key: 'contact'
+            key: 'contact',
+          resizable: true
           }
         ],
         supplierInfo: [],

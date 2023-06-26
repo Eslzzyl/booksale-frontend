@@ -6,7 +6,7 @@
         <strong>{{ row.name }}</strong>
       </template>
     </Table>
-    <Page :total="bookNum" :page-size="10" @on-change="changePage" show-total></Page>
+    <Page :total="bookNum" :page-size="10" @on-change="changePage" show-total show-elevator></Page>
   </div>
 </template>
   
@@ -20,51 +20,63 @@ export default {
       columns: [
         {
           title: '书籍ID',
-          key: 'id'
+          key: 'id',
+          resizable: true
         },
         {
           title: '书名',
-          key: 'name'
+          key: 'name',
+          resizable: true
         },
         {
           title: '作者',
-          key: 'author'
+          key: 'author',
+          resizable: true
         },
         {
           title: '库存数量',
-          key: 'count'
+          key: 'count',
+          resizable: true
         },
         {
           title: '属性',
-          key: 'attribute'
+          key: 'attribute',
+          resizable: true
         },
         {
           title: '类型',
-          key: 'type'
+          key: 'type',
+          resizable: true
         },
         {
           title: 'ISBN',
-          key: 'isbn'
+          key: 'isbn',
+          resizable: true
         },
         {
           title: '价格',
-          key: 'price'
+          key: 'price',
+          resizable: true
         },
         {
           title: '出版商ID',
-          key: 'pid'
+          key: 'pid',
+          resizable: true
         },
         {
           title: '供应商ID',
-          key: 'sid'
+          key: 'sid',
+          resizable: true
         },
         {
           title: '出版商',
-          key: 'pname'
+          key: 'pname',
+          resizable: true
         },
         {
           title: '供应商',
-          key: 'sname'
+          key: 'sname',
+          resizable: true
         },
       ],
       bookInfo: [],

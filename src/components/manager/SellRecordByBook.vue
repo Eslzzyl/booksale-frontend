@@ -6,7 +6,7 @@
         <strong>{{ row.name }}</strong>
       </template>
     </Table>
-    <Page :total="sellNum" :page-size="10" @on-change="changePage" show-total></Page>
+    <Page :total="sellNum" :page-size="10" @on-change="changePage" show-total show-elevator></Page>
   </div>
 </template>
 
@@ -22,15 +22,18 @@ export default {
       columns: [
         {
           title: '书籍ID',
-          key: 'bid'
+          key: 'bid',
+          resizable: true
         },
         {
           title: '总销售额',
-          key: 'price'
+          key: 'price',
+          resizable: true
         },
         {
           title: "利润",
-          key: "profit"
+          key: "profit",
+          resizable: true
         },
       ],
     }

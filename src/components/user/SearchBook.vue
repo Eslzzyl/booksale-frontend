@@ -25,7 +25,7 @@
         <Button type="primary" size="small" @click="putCart(index)">加购</Button>
       </template>
     </Table>
-    <Page :total="bookNum" :page-size="10" @on-change="changePage" show-total></Page>
+    <Page :total="bookNum" :page-size="10" @on-change="changePage" show-total show-elevator></Page>
   </div>
 </template>
 
@@ -48,44 +48,68 @@ export default {
       },
       columns: [
         {
+          title: '图片',
+          key: 'image',
+          render: (h, params) => {
+            return h('div', [
+              h('img', {
+                  src: params.row.image,
+                  style: 'width: 100px;border-radius: 2px;'
+              }),
+            ]);
+          }
+        },
+        {
           title: '书名',
-          key: 'name'
+          key: 'name',
+          width: 200,
+          resizable: true
         },
         {
           title: '作者',
-          key: 'author'
+          key: 'author',
+          resizable: true
         },
         {
           title: '标签',
-          key: 'attribute'
+          key: 'attribute',
+          resizable: true
         },
         {
           title: '类型',
           key: 'type',
+          resizable: true
         },
         {
           title: '出版社',
-          key: 'pname'
+          key: 'pname',
+          resizable: true
         },
         {
           title: '价格',
           key: 'price',
+          width: 80,
           sortable: true,
+          resizable: true
         },
         {
           title: '库存',
           key: 'inventory',
-          sortable: true
+          width: 80,
+          sortable: true,
+          resizable: true
         },
         {
           title: '操作',
           slot: 'action',
-          align: 'center'
+          align: 'center',
+          resizable: true
         },
       ],
       // 用来保存查询到的书目信息
       currBooksInfo: [
         {
+          image: "https://doc-rec.site/images/after.png",
           id: "0001",
           name: "测试书名",
           author: "Eslzzyl",
@@ -226,7 +250,7 @@ export default {
         console.log(error);
       }
     },
-    async changePage (page) {
+    async changePage(page) {
       const that = this
       let name = that.bookInfoInput.name
       let author = that.bookInfoInput.author
@@ -256,6 +280,7 @@ export default {
         obj.pname = e.pname
         obj.sname = e.sname
         obj.isbn = e.isbn
+        obj.image = e.image
         this.currBooksInfo.push(obj)
       })
     }
