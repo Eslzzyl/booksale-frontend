@@ -127,7 +127,7 @@ export default {
                 window.localStorage.setItem('name', name)
                 window.localStorage.setItem('sex', sex)
                 window.localStorage.setItem('age', age)
-                window.localStorage.setItem('cart', JSON.stringify(cart)
+                window.localStorage.setItem('cart', JSON.stringify(cart))
                 this.updateToken(token)
                 console.log('登录成功' + contact + ' ' + name)
                 let msg = response.data.msg
