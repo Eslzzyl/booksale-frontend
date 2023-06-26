@@ -73,6 +73,11 @@ export default {
           sortable: true,
         },
         {
+          title: '库存',
+          key: 'inventory',
+          sortable: true
+        },
+        {
           title: '操作',
           slot: 'action',
           align: 'center'
@@ -159,7 +164,7 @@ export default {
         // 查找cart中是否已经有记录
         for (let i = 0; i < cart.length; i++) {
           if (cart[i].id === bookId) {
-            if (cart[i] >= this.currBooksInfo[index].inventory) {
+            if (cart[i].count >= this.currBooksInfo[index].inventory) {
               this.$Message.error('库存不足，无法加购')
               return
             }
