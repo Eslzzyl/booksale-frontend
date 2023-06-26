@@ -67,7 +67,7 @@ export default {
       try {
         // 默认一页放10条记录
         let size = 10
-        const response = await axios.post('/manage/salesdata/Book', { page, size })
+        const response = await axios.post('/manage/salesdata/Book')
 
         // 请求成功
         if (response.data.code === 1) {
