@@ -73,13 +73,13 @@ export default {
   async mounted() {
     // 请求第一页数据
     const that = this
-    const pack = await this.request(1)
+    const pack = await that.request(1)
     if (pack) {
       that.updateItem(pack)
     }
   },
   methods: {
-    changePage: async (page) => {
+    async changePage (page) {
       const that = this
       const pack = await that.request(page)
       if (pack) {
@@ -92,7 +92,7 @@ export default {
       let size = 10
       let that = this
       try {
-        const response = await axios.post('/book/hottest', {
+        const response = await axios.post('/manager/hottable', {
           params: {
             page: page,
             size: size

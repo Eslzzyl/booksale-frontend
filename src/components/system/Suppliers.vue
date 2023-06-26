@@ -60,7 +60,7 @@
       }
     },
     methods: {
-      changePage: async (page) => {
+      async changePage (page) {
         const that =this
         const pack = await that.request(page)
         if (pack) {

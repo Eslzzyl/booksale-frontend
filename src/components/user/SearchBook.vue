@@ -202,7 +202,7 @@ export default {
         console.log(error);
       }
     },
-    changePage: async (page) => {
+    async changePage (page) {
       let that = this
       let name = that.bookInfoInput.name
       let author = that.bookInfoInput.author

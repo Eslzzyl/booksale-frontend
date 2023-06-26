@@ -73,7 +73,7 @@ export default {
     }
   },
   methods: {
-    changePage: async (page) => {
+    async changePage (page) {
       let that = this
       const pack = await that.request(page)
       if (pack) {

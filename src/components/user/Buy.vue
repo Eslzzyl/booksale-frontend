@@ -22,7 +22,7 @@
         <Button type="primary" size="small" style="margin-right: 5px" @click="remove(index)">删除</Button>
       </template>
     </Table>
-    <Page :total="historyNum" :page-size="10" @on-change="changePage" show-total></Page>
+    <Page :total="cartNum" :page-size="10" @on-change="changePage" show-total></Page>
     <span id="total-price">总价：{{ totalPrice }}</span>
   </div>
 </template>
@@ -37,6 +37,7 @@ export default {
     return {
       cartNum: 0,
       currCart: [],
+      currPage: [],
       totalPrice: 0,
       clearModal: false,
       loading: false,
@@ -69,9 +70,13 @@ export default {
       this.totalPrice = this.currCart.reduce((total, item) => {
         return total + item.price * item.count;
       }, 0);
+      this.currPage = this.currCart.slice(0, 10);
     }
   },
   methods: {
+    changePage(page) {
+      this.currPage = this.currCart.slice((page - 1) * 10, page * 10);
+    },
     remove(index) {
       this.currCart.splice(index, 1);
       this.cartNum -= 1;
