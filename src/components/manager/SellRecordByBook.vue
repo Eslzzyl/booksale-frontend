@@ -40,7 +40,7 @@ export default {
     // 请求总量
     axios.post('/manager/salesdata/CBook').then((response) => {
       if (response.data.code === 1) {
-        that.userNum = response.data.data
+        that.sellNum = response.data.data
         that.$Message.success('已获取到' + that.sellNum + '条销售记录信息')
       } else {
         that.$Message.error('请求销售记录信息失败！')
@@ -84,13 +84,13 @@ export default {
       }
     },
     updateItem(pack) {
-      this.userInfo = []
+      this.sellInfo = []
       pack.forEach((e) => {
         let obj = {}
         obj.bid = e.bid
         obj.price = e.price
         obj.profit = e.profit
-        this.userInfo.push(obj)
+        this.sellInfo.push(obj)
       })
     },
   }

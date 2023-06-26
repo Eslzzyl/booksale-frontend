@@ -13,7 +13,7 @@
         <Button type="error" size="small" @click="remove(index)">删除</Button>
       </template>
     </Table>
-    <Page :total="historyNum" :page-size="10" @on-change="changePage" show-total></Page>
+    <Page :total="supplierNum" :page-size="10" @on-change="changePage" show-total></Page>
   </div>
 </template>
   
@@ -106,7 +106,7 @@ export default {
         let obj = {}
         obj.id = e.id
         obj.name = e.name
-        obj.console = e.contact
+        obj.contact = e.contact
         obj.address = e.address
         this.supplierInfo.push(obj)
       })
@@ -147,7 +147,7 @@ export default {
         console.log(error)
       })
     },
-    insert() {
+    insert(index) {
       let result = this.getInfo()
       let code = result.code
       if (code === 0) {

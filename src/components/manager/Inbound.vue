@@ -51,7 +51,7 @@ export default {
     // 请求总量
     axios.post('/manager/inboundnum').then((response) => {
       if (response.data.code === 1) {
-        that.userNum = response.data.data
+        that.inboundNum = response.data.data
         that.$Message.success('已获取到' + that.inboundNum + '条入库记录信息')
       } else {
         that.$Message.error('请求入库记录信息失败！')
@@ -106,7 +106,7 @@ export default {
         obj.sid = e.sid
         obj.price = e.price
         obj.time = this.formatTimestamp(e.time)
-        this.userInfo.push(obj)
+        this.inboundInfo.push(obj)
       })
     },
     formatTimestamp(time) {
