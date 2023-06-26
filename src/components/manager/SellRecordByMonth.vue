@@ -42,7 +42,7 @@ export default {
   async mounted() {
     const that = this
     // 请求总量
-    axios.post('/manage/salesdata/CDate').then((response) => {
+    axios.post('/manager/salesdata/CDate').then((response) => {
       if (response.data.code === 1) {
         that.userNum = response.data.data
         that.$Message.success('已获取到' + that.sellNum + '条销售记录信息')
@@ -71,7 +71,7 @@ export default {
       try {
         // 默认一页放10条记录
         let size = 10
-        const response = await axios.post('/manage/salesdata/Date')
+        const response = await axios.post('/manager/salesdata/Date')
 
         // 请求成功
         if (response.data.code === 1) {
