@@ -116,7 +116,7 @@ export default {
       this.userInfo.splice(index, 1)
       let user = []
       user.push(this.userInfo[index].contact)
-      axios.post('/manage/user/delete', {user}).then((response) => {
+      axios.post('/manager/user/delete', {user}).then((response) => {
         if (response.data.code === 1) {
           this.$Message.success('删除用户成功！')
         } else {
