@@ -15,7 +15,7 @@
       <!--用户类型-->
       <Row>
         <Col :xs="23" :sm="23" :md="23" :lg="23">
-        <FormItem prop="type" label="类型">
+        <FormItem prop="type" label="用户类型">
           <Input type="text" v-model="formItem.type" disabled :placeholder="formItem.type"></Input>
         </FormItem>
         </Col>
@@ -95,11 +95,6 @@ export default {
         conf_password: '',
       },
       ruleItem: {
-        name: [{
-          required: true,
-          message: "请输入姓名！",
-          trigger: "blur"
-        }],
         password: [{
           required: true,
           message: "请填写密码",
@@ -116,7 +111,7 @@ export default {
           trigger: "blur"
         }, {
           type: "string",
-          min: 3,
+          min: 6,
           message: "密码长度不能小于6位",
           trigger: "blur"
         }]
@@ -126,16 +121,32 @@ export default {
   mounted() {
     this.formItem.contact = window.localStorage.getItem('contact')
     this.formItem.name = window.localStorage.getItem('name')
-    this.formItem.type = window.localStorage.getItem('type')
+    if (window.localStorage.getItem('type') === '1') {
+      this.formItem.type = '用户'
+    } else if (window.localStorage.getItem('type') === '2') {
+      this.formItem.type = '管理员'
+    } else {
+      this.formItem.type = '未知类别'
+    }
     this.formItem.sex = window.localStorage.getItem('sex')
     this.formItem.age = window.localStorage.getItem('age')
   },
   methods: {
     handleSubmit() {
-      let that = this
       this.loading = true
+      if (this.formItem.name === '') {
+        that.$Message.error('用户名不能为空！')
+        this.loading = false
+        return
+      }
+      if (this.formItem.password === '') {
+        that.$Message.error('密码不能为空！')
+        this.loading = false
+        return
+      }
       if (this.formItem.password != this.formItem.conf_password) {
         that.$Message.error('两次输入的密码不匹配！')
+        this.loading = false
         return
       }
       axios.post('/user/userChange',
@@ -158,6 +169,7 @@ export default {
         }
       }).catch((error) => {
         console.log(error)
+        this.loading = false
       });
     }
   },
