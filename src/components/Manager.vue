@@ -15,8 +15,11 @@
               <span>欢迎你，管理员 {{ username }}</span>
             </Space>
           </div>
-          <MenuItem name="1-1" @click.native="manageBook"><span>书籍管理</span></MenuItem>
-          <MenuItem name="1-2" @click.native="lookRecord"><span>销售记录</span></MenuItem>
+          <MenuItem name="1-1" @click.native="lookRecordByBook"><span>销售记录-按书统计</span></MenuItem>
+          <MenuItem name="1-2" @click.native="lookRecordByMonth"><span>销售记录-按月统计</span></MenuItem>
+          <MenuItem name="1-3" @click.native="manageUser"><span>用户管理</span></MenuItem>
+          <MenuItem name="1-4" @click.native="manageSupplier"><span>供应商管理</span></MenuItem>
+          <MenuItem name="1-5" @click.native="lookInbound"><span>入库信息管理</span></MenuItem>
         </Submenu>
       </Menu>
       </Col>
@@ -51,8 +54,11 @@
 </template>
 
 <script>
-import ManageBook from './manager/ManageBook.vue'
-import SellRecord from './manager/SellRecord.vue'
+import SellRecordByBook from './manager/SellRecordByBook.vue'
+import SellRecordByMonth from './manager/SellRecordByMonth.vue'
+import ManageUser from './manager/ManageUser.vue'
+import ManageSupplier from './manager/ManageSupplier.vue'
+import Inbound from './manager/Inbound.vue'
 import { Button } from 'view-ui-plus'
 
 export default {
@@ -73,19 +79,34 @@ export default {
     updateToken(value) {
       window.localStorage.setItem('token', value)
     },
-    manageBook() {
+    lookRecordByBook() {
       this.one_nav = '主页'
-      this.two_nav = '书籍管理'
-      this.currentView = 'ManageBook'
+      this.two_nav = '销售记录-按书统计'
+      this.currentView = 'SellRecordByBook'
     },
-    lookRecord() {
+    lookRecordByMonth() {
       this.one_nav = '主页'
-      this.two_nav = '销售记录'
-      this.currentView = 'SellRecord'
+      this.two_nav = '销售记录-按月统计'
+      this.currentView = 'SellRecordByMonth'
+    },
+    manageUser() {
+      this.one_nav = '主页'
+      this.two_nav = '用户管理'
+      this.currentView = 'ManageUser'
+    },
+    manageSupplier() {
+      this.one_nav = '主页'
+      this.two_nav = '供应商管理'
+      this.currentView = 'ManageSupplier'
+    },
+    lookInbound() {
+      this.one_nav = '主页'
+      this.two_nav = '入库信息管理'
+      this.currentView = 'Inbound'
     },
     // 用户确认登出，清除token信息并返回到登录页面
     logoutModalConfirmed() {
-      this.updateToken('')
+      window.localStorage.clear()
       this.$Message.info('已登出')
       this.$router.replace('/')
     },
@@ -96,8 +117,11 @@ export default {
   },
   components: {
     Button,
-    ManageBook: ManageBook,
-    SellRecord: SellRecord,
+    SellRecordByBook: SellRecordByBook,
+    SellRecordByMonth: SellRecordByMonth,
+    ManageUser: ManageUser,
+    ManageSupplier: ManageSupplier,
+    Inbound: Inbound
   }
 }
 </script>

@@ -7,7 +7,7 @@
         <span v-if="!loading">结算</span>
         <span v-else>购买中...</span>
       </Button>
-      <Button id="clear-btn" @click="clearModal = true">
+      <Button id="clear-btn" type="error" @click="clearModal = true">
         <Icon type="ios-cart" />清空购物车
       </Button>
       <Modal v-model="clearModal" title="确认清空" @on-ok="clear">
@@ -19,7 +19,7 @@
         <strong>{{ row.name }}</strong>
       </template>
       <template #action="{ row, index }">
-        <Button type="primary" size="small" style="margin-right: 5px" @click="remove(index)">删除</Button>
+        <Button type="error" size="small" style="margin-right: 5px" @click="remove(index)">删除</Button>
       </template>
     </Table>
     <Page :total="cartNum" :page-size="10" @on-change="changePage" show-total></Page>

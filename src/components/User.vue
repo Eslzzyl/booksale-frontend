@@ -100,7 +100,6 @@ export default {
     },
     // 用户确认登出，清除token信息并返回到登录页面
     logoutModalConfirmed() {
-      this.updateToken('')
       window.localStorage.clear()
       this.$Message.info('已登出')
       this.$router.replace('/')

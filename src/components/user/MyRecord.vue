@@ -56,25 +56,27 @@ export default {
     this.historyInfo = []
     const data = await that.request(1)
     const pack = data.purchase
+    const num = data.historynum
     if (pack) {
       this.updateInfo(pack)
     }
+    if (num) {
+      that.historyNum = num
+      that.$Message.success('获取到了' + num + '条购买记录')
+    } else {
+      that.$Message.error('未能获取到购买记录！')
+    }
   },
   methods: {
-    async changePage (page) {
+    async changePage(page) {
       let that = this
       const data = await that.request(page)
       const pack = data.purchase
-      const num = data.historynum
+
       if (pack) {
         that.updateInfo(pack)
       }
-      if (num) {
-        that.historyNum = num
-        that.$Message.success('获取到了' + num + '条购买记录')
-      } else {
-        that.$Message.error('未能获取到购买记录！')
-      }
+
     },
     // 向后端发出请求
     async request(page) {

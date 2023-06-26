@@ -1,15 +1,15 @@
 <template>
   <div class="container">
     <h2>用户管理</h2>
-    <Table border height="550" :columns="columns" :data="currCart">
+    <Table border height="550" :columns="columns" :data="userInfo">
       <template #name="{ row }">
         <strong>{{ row.name }}</strong>
       </template>
       <template #action="{ row, index }">
-        <Button type="primary" size="small" style="margin-right: 5px" @click="remove(index)">删除用户</Button>
+        <Button type="error" size="small" style="margin-right: 5px" @click="remove(index)">删除用户</Button>
       </template>
     </Table>
-    <Page :total="historyNum" :page-size="10" @on-change="changePage" show-total></Page>
+    <Page :total="userNum" :page-size="10" @on-change="changePage" show-total></Page>
   </div>
 </template>
 
@@ -50,9 +50,91 @@ export default {
       ],
     }
   },
-  mounted() {
+  async mounted() {
     const that = this
-    
+    // 请求用户总量
+    axios.post('/manager/accountnum').then((response) => {
+      if (response.data.code === 1) {
+        that.userNum = response.data.data
+        that.$Message.success('已获取到' + that.userNum + '条用户账户信息')
+      } else {
+        that.$Message.error('请求用户账户信息失败！')
+        console.log('请求用户账户信息失败！')
+      }
+    }).catch((error) => {
+      that.$Message.error('请求用户账户信息失败！')
+      console.log(error)
+    })
+    // 请求第一页数据
+    const pack = await that.request(1)
+    if (pack) {
+      that.updateItem(pack)
+    }
+  },
+  methods: {
+    async changePage(page) {
+      let that = this
+      const pack = await that.request(page)
+      if (pack) {
+        that.updateItem(pack)
+      }
+    },
+    // 向后端发出请求
+    async request(page) {
+      try {
+        // 默认一页放10条记录
+        let size = 10
+        const response = await axios.post('/manage/user/search', {page, size})
+
+        // 请求成功
+        if (response.data.code === 1) {
+          console.log('请求成功')
+          return response.data.data
+        } else {
+          // 请求失败
+          that.$Message.error('请求用户账户信息失败！')
+          console.log('请求用户账户信息失败！')
+        }
+      } catch (error) {
+        that.$Message.error('请求用户账户信息失败！')
+        console.log(error)
+      }
+    },
+    updateItem(pack) {
+      this.userInfo = []
+      pack.forEach((e) => {
+        let obj = {}
+        obj.contact = e.contact
+        obj.name = e.name
+        obj.type = e.type
+        obj.sex = e.sex
+        obj.age = e.age
+        this.userInfo.push(obj)
+      })
+    },
+    remove(index) {
+      this.userInfo.splice(index, 1)
+      let user = []
+      user.push(this.userInfo[index].contact)
+      axios.post('/manage/user/delete', {user}).then((response) => {
+        if (response.data.code === 1) {
+          this.$Message.success('删除用户成功！')
+        } else {
+          this.$Message.error('删除用户失败！')
+        }
+      }).catch((error) => {
+        this.$Message.error('删除用户失败！')
+        console.log(error)
+      })
+    }
   }
 }
 </script>
+
+<style scoped>
+h2 {
+  color: #2D8CF0;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+</style>
