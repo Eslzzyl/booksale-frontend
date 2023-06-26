@@ -121,16 +121,18 @@ export default {
                 let sex = response.data.data.account.sex
                 let age = response.data.data.account.age
                 let token = response.data.data.jwt
+                let cart = []
                 window.localStorage.setItem('contact', contact)
-                // type == 1 用户
-                // type == 2 管理员
                 window.localStorage.setItem('type', type)
                 window.localStorage.setItem('name', name)
                 window.localStorage.setItem('sex', sex)
                 window.localStorage.setItem('age', age)
+                window.localStorage.setItem('cart', JSON.stringify(cart)
                 this.updateToken(token)
                 console.log('登录成功' + contact + ' ' + name)
                 let msg = response.data.msg
+                // type == 1 用户
+                // type == 2 管理员
                 if (msg === 'user') {    // 用户
                   this.$router.replace({ path: '/user' })
                 } else if (msg === 'manager') {   // 管理员
