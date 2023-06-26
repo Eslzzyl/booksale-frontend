@@ -94,7 +94,7 @@ export default {
   methods: {
     changePage: async (page) => {
       let that = this
-      const pack = await this.request(page)
+      const pack = await that.request(page)
       if (pack) {
         that.updateItem(pack)
       }

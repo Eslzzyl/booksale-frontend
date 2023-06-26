@@ -13,7 +13,7 @@
         </Space>
       </FormItem>
       <FormItem>
-        <Button type="primary" :loading="loading" @click="handleSubmit('bookInfoInput')">查找</Button>
+        <Button type="primary" :loading="loading" @click="handleSubmit(bookInfoInput)">查找</Button>
       </FormItem>
     </Form>
     <Table stripe border height="550" :columns="columns" :data="currBooksInfo">
@@ -119,20 +119,20 @@ export default {
     }
   },
   methods: {
-    handleSubmit(info) {
+    async handleSubmit(info) {
+      let that = this
       let name = info.name
       let author = info.author
       let attribute = info.attribute
       let type = info.type
       let pname = info.pname
-      this.loading = true
+      that.loading = true
 
-      const pack = this.request(1, name, author, attribute, type, pname)
+      const pack = await tthathis.request(1, name, author, attribute, type, pname)
       if (pack) {
-        this.updateInfo(pack)
+        that.updateInfo(pack)
       }
-
-      this.loading = false
+      that.loading = false
     },
     // 使用模态窗口展示书籍信息
     show(index) {
@@ -204,11 +204,11 @@ export default {
     },
     changePage: async (page) => {
       let that = this
-      let name = this.currBooksInfo.name
-      let author = this.currBooksInfo.author
-      let attribute = this.currBooksInfo.attribute
-      let type = this.currBooksInfo.type
-      let pname = this.currBooksInfo.pname
+      let name = that.bookInfoInput.name
+      let author = that.bookInfoInput.author
+      let attribute = that.bookInfoInput.attribute
+      let type = that.bookInfoInput.type
+      let pname = that.bookInfoInput.pname
       let sname = ''    // 用户无需关心供应商
 
       let pack = await that.request(page, name, author, attribute, type, sname, pname)

@@ -39,7 +39,7 @@
       }
     },
     async mounted() {
-      let that = this;
+      const that = this;
       // 请求图书总量
       axios.post('/manager/suppliersnum').then((response) => {
         if (response.data.code === 1) {
@@ -54,9 +54,9 @@
         console.log(error);
       });
       // 请求第一页数据
-      const pack = this.request(1)
+      const pack = that.request(1)
       if (pack) {
-        this.updateInfo(pack)
+        that.updateInfo(pack)
       }
     },
     methods: {
@@ -73,7 +73,7 @@
         let size = 10
         let that = this
         try {
-          const response = await post('/manager/suppliers',
+          const response = await axios.post('/manager/suppliers',
             {
               page: page,
               size: size,
@@ -92,6 +92,17 @@
           console.log(error);
         }
       },
+      updateInfo(pack) {
+        this.supplierInfo = []
+        pack.forEach((e) => {
+          let obj = {}
+          obj.id = e.id
+          obj.name = e.name
+          obj.address = e.address
+          obj.contact = e.contact
+          this.supplierInfo.push(obj)
+        })
+      }
     }
   }
   </script>
