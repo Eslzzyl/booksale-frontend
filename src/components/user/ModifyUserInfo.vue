@@ -67,7 +67,7 @@
       <!-- 注册按钮 -->
       <Row>
         <Col :xs="24" :sm="24" :md="24" :lg="24">
-        <Button id="modify_btn" shape="circle" type="primary" @click="handleSubmit()">
+        <Button id="modify_btn" shape="circle" type="primary" @click="handleSubmit">
           <span v-if="!loading">确认修改</span>
           <span v-else>修改中...</span>
         </Button>
@@ -101,7 +101,7 @@ export default {
           trigger: "blur"
         }, {
           type: "string",
-          min: 3,
+          min: 6,
           message: "密码长度不能小于6位",
           trigger: "blur"
         }],
@@ -133,20 +133,21 @@ export default {
   },
   methods: {
     handleSubmit() {
-      this.loading = true
-      if (this.formItem.name === '') {
+      const that = this
+      that.loading = true
+      if (that.formItem.name === '') {
         that.$Message.error('用户名不能为空！')
-        this.loading = false
+        that.loading = false
         return
       }
-      if (this.formItem.password === '') {
+      if (that.formItem.password === '') {
         that.$Message.error('密码不能为空！')
-        this.loading = false
+        that.loading = false
         return
       }
-      if (this.formItem.password != this.formItem.conf_password) {
+      if (that.formItem.password != that.formItem.conf_password) {
         that.$Message.error('两次输入的密码不匹配！')
-        this.loading = false
+        that.loading = false
         return
       }
       axios.post('/user/userChange',
