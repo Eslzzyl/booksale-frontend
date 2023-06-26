@@ -264,7 +264,10 @@ export default {
 
       let pack = await that.request(page, name, author, attribute, type, sname, pname)
       if (pack) {
-        that.updateInfo(pack)
+        const books = pack.books
+        const num = pack.num
+        that.bookNum = num
+        that.updateInfo(books)
       }
     },
     updateInfo(pack) {
