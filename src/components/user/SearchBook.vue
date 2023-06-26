@@ -135,7 +135,10 @@ export default {
 
       const pack = await that.request(1, name, author, attribute, type, pname)
       if (pack) {
-        that.updateInfo(pack)
+        const books = pack.books
+        const num = pack.num
+        that.bookNum = num
+        that.updateInfo(books)
       }
       that.loading = false
     },
