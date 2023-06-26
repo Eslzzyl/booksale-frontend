@@ -12,7 +12,7 @@
           <div class="welcome">
             <Space>
               <Icon type="ios-navigate" />
-              <span>欢迎你，{{ window.localStorage.getItem('name') }}</span>
+              <span>欢迎你，{{ username }}</span>
             </Space>
           </div>
           <MenuItem name="1-1" @click.native="searchBook"><span>搜索书籍</span></MenuItem>
@@ -64,32 +64,40 @@ export default {
   name: 'Reader',
   data() {
     return {
+      username: '',
       one_nav: '主页',
       two_nav: '搜索书籍',
       currentView: 'SearchBook',
       logoutModal: false,
     }
   },
+  mounted() {
+    this.username = window.localStorage.getItem('name')
+  },
   methods: {
     updateToken(value) {
       window.localStorage.setItem('token', value)
     },
     searchBook() {
+      this.username = window.localStorage.getItem('name')
       this.one_nav = '主页'
       this.two_nav = '搜索书籍'
       this.currentView = 'SearchBook'
     },
     lookRecord() {
+      this.username = window.localStorage.getItem('name')
       this.one_nav = '主页'
       this.two_nav = '购买记录'
       this.currentView = 'MyRecord'
     },
     modifyUserInfo() {
+      this.username = window.localStorage.getItem('name')
       this.one_nav = '主页'
       this.two_nav = '修改用户信息'
       this.currentView = 'ModifyUserInfo'
     },
     buy() {
+      this.username = window.localStorage.getItem('name')
       this.one_nav = '主页'
       this.two_nav = '购物车'
       this.currentView = 'Buy'
