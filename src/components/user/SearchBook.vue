@@ -113,10 +113,12 @@ export default {
       console.log(error);
     });
     // 请求第一页数据
-    let pack = []
-    axios.post('user/book').then((response) => {
+    axios.post('user/book', {page: 1, size: 10}).then((response) => {
       if (response.data.code === 1) {
-        pack = response.data.data.book
+        const pack = response.data.data.book
+        if (pack) {
+          that.updateInfo(pack)
+        }
       } else {
         that.$Message.error('请求图书信息失败！')
         console.log('请求图书信息失败！')
@@ -125,9 +127,7 @@ export default {
       that.$Message.error('请求图书信息失败！')
       console.log(error);
     })
-    if (pack) {
-      this.updateInfo(pack)
-    }
+    
   },
   methods: {
     async handleSubmit(info) {
