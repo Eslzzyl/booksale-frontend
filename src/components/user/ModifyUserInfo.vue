@@ -163,6 +163,10 @@ export default {
         console.log(response)
         if (response.data.code === 1) {
           this.$Message.success('修改成功！')
+          window.localStorage.setItem('contact', that.formItem.contact)
+          window.localStorage.setItem('name', that.formItem.name)
+          window.localStorage.setItem('sex', that.formItem.sex)
+          window.localStorage.setItem('age', that.formItem.age)
           this.loading = false
         } else {
           this.$Message.error('修改失败！')
