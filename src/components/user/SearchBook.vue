@@ -113,21 +113,10 @@ export default {
       console.log(error);
     });
     // 请求第一页数据
-    axios.post('user/book', {page: 1, size: 10}).then((response) => {
-      if (response.data.code === 1) {
-        const pack = response.data.data.book
-        if (pack) {
-          that.updateInfo(pack)
-        }
-      } else {
-        that.$Message.error('请求图书信息失败！')
-        console.log('请求图书信息失败！')
-      }
-    }).catch((error) => {
-      that.$Message.error('请求图书信息失败！')
-      console.log(error);
-    })
-    
+    const pack = that.request(1)
+    if (pack) {
+      that.updateInfo(pack)
+    }
   },
   methods: {
     async handleSubmit(info) {
@@ -165,33 +154,41 @@ export default {
       const bookName = this.currBooksInfo[index].name
       const bookPrice = this.currBooksInfo[index].price
       let cart = window.localStorage.getItem('cart')
-      if (cart) {
-        cart = JSON.parse(cart)
-        if (cart[bookId]) {
-          cart[bookId].count += 1
-        } else {
-          cart[bookId] = {
-            count: 1,
-            name: bookName,
-            price: bookPrice
+      cart = JSON.parse(cart)
+      if (cart.length != 0) {
+        // 查找cart中是否已经有记录
+        for (let i = 0; i < cart.length; i++) {
+          if (cart[i].id === bookId) {
+            cart[i].count += 1
+            window.localStorage.setItem('cart', JSON.stringify(cart))
+            this.$Message.success('加购成功')
+            return
           }
         }
-      } else {
-        cart = []
-        // 向cart中添加一条记录
-        cart[bookId] = {
+        cart.push({
+          id: bookId,
           count: 1,
           name: bookName,
           price: bookPrice
-        }
+        })
+      } else {
+        // 向cart中添加一条记录
+        cart.push({
+          id: bookId,
+          count: 1,
+          name: bookName,
+          price: bookPrice
+        })
       }
       window.localStorage.setItem('cart', JSON.stringify(cart))
+      this.$Message.success('加购成功')
     },
     // 向后端发出请求
-    async request(page, name = '', author = '', attribute = '', type = '', sname = '', pname = '') {
+    async request(page, name = '', author = '', attribute = '', type = '', pname = '') {
       // 默认一页放10本书
       let size = 10
-      var that = this
+      const that = this
+      let sname = ''
       try {
         let response = await axios.post('/user/searchBook',
           {

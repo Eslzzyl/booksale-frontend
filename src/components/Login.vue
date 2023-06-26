@@ -96,6 +96,7 @@ export default {
     }
   },
   mounted() {
+    window.localStorage.clear()
     this.createCode()
   },
   methods: {

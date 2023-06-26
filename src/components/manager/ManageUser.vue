@@ -6,7 +6,7 @@
         <strong>{{ row.name }}</strong>
       </template>
       <template #action="{ row, index }">
-        <Button type="primary" size="small" style="margin-right: 5px" @click="remove(index)">删除</Button>
+        <Button type="primary" size="small" style="margin-right: 5px" @click="remove(index)">删除用户</Button>
       </template>
     </Table>
     <Page :total="historyNum" :page-size="10" @on-change="changePage" show-total></Page>

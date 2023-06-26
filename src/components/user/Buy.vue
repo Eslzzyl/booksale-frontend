@@ -43,6 +43,10 @@ export default {
       loading: false,
       columns: [
         {
+          title: '书籍ID',
+          key: 'id'
+        },
+        {
           title: "书名",
           key: "name"
         },
@@ -63,13 +67,14 @@ export default {
     };
   },
   mounted() {
-    const cart = localStorage.getItem("cart");
-    if (cart) {
-      this.currCart = JSON.parse(cart);
-      this.cartNum = this.currCart.length;
-      this.totalPrice = this.currCart.reduce((total, item) => {
-        return total + item.price * item.count;
-      }, 0);
+    let cart = localStorage.getItem("cart")
+    cart = JSON.parse(cart)
+    if (cart.length > 0) {
+      this.currCart = cart
+      this.cartNum = cart.length
+      for (let i = 0; i < this.currCart.length; i++) {
+        this.totalPrice += this.currCart[i].price * this.currCart[i].count;
+      }
       this.currPage = this.currCart.slice(0, 10);
     }
   },
@@ -91,15 +96,13 @@ export default {
       let posts = [];
       for (let i = 0; i < this.currCart.length; i++) {
         posts.push({
-          bid: this.currCart[i].bid,
+          bid: this.currCart[i].id,
           num: this.currCart[i].count,
           uid: this.localStorage.getItem("contact")
         });
       }
 
-      axios.post("/user/purchase", {
-        posts
-      }).then(response => {
+      axios.post("/user/purchase", posts).then(response => {
         if (response.data.code === 1) {
           this.$Message.success("购买成功");
           this.loading = false;
