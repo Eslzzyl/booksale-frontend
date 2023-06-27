@@ -2,62 +2,30 @@
 
 数据库课程设计 网上书城项目 前端
 
-## 表
+###
 
-- 账户表（用户+管理员）
-- 书籍表
-- 供应商表
-- 出版商表
-- 购买记录
-- 入库记录
+技术：Vue 3 + View UI Plus
 
-## 功能
+这是合肥工业大学2023《数据库系统课程设计》项目的前端部分。后端部分在[这里](https://github.com/katsss188/BookSellerSystem)。
 
-- 登录，返回
-  - code, int 1成功 0失败
-  - msg, String
-    - "user" 用户
-    - "manager" 管理员
-  - data, Object
-    - token, String
-- 注册
+这个项目是仓促写完的，Vue属于速成，因此不建议作为参考。
 
-### 用户
+## 使用
 
-- 用户信息修改
-  - 除了登陆用的contact之外，别的都可以修改
-- 显示用户购买记录。向后端传递3个参数：
-  - 用户的contact
-  - 当前页面 `page`
-  - 页的长度 `size`
-- 图书多栏搜索，向后端传递：
-  - 至少一个栏的内容
-  - 当前页面
-  - 页的长度
-- 按照某个属性排序，传入4个参数
-  - `int`型的`type`，可以取1-5
-    - 1 按照书名排序
-    - 2 按照作者排序
-    - 3 按照出版商排序
-    - 4 按照供应商排序
-    - 5 按照价格排序
-  - `int`型的`way`，可以传1或者2
-    - 1 升序
-    - 2 降序
-  - 当前页面
-  - 页的大小
-- 购买图书，传入一个JSON数组，可以买多本书，每个数组包括
-  - `bid`，书号
-  - `num`，购买的数量
-  - `uid`，用户的contact
+在使用之前，确保你安装了 [Node.js](https://nodejs.org/) 18 LTS 或者更新的版本。推荐使用的包管理器是 [pnpm](https://www.pnpm.cn/)。
 
-### 管理员
+首先clone仓库
 
-### 通用
+```bash
+git clone https://github.com/Eslzzyl/booksale-frontend.git
+```
 
-- 查询书表
-- 查询用户表
-- 查询供应商表
-- 查询出版商表
-- 查询购买记录表
-- 查询入库记录表
+然后执行
+
+```bash
+cd booksale-frontend
+pnpm install
+pnpm dev
+```
+
+启动项目。开发版项目将默认运行在 localhost 的5173端口。后端地址是 `localhost:8888`。
