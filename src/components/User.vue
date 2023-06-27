@@ -19,6 +19,7 @@
           <MenuItem name="1-2" @click.native="buy"><span>购物车</span></MenuItem>
           <MenuItem name="1-3" @click.native="lookRecord"><span>购买记录</span></MenuItem>
           <MenuItem name="1-4" @click.native="modifyUserInfo"><span>修改用户信息</span></MenuItem>
+          <MenuItem name="1-5" @click.native="hot"><span>热门书籍</span></MenuItem>
         </Submenu>
       </Menu>
       </Col>
@@ -58,6 +59,7 @@ import SearchBook from './user/SearchBook.vue'
 import Buy from './user/Buy.vue'
 import MyRecord from './user/MyRecord.vue'
 import ModifyUserInfo from './user/ModifyUserInfo.vue'
+import Hot from './user/Hot.vue'
 import { Button } from 'view-ui-plus'
 
 export default {
@@ -102,6 +104,12 @@ export default {
       this.two_nav = '购物车'
       this.currentView = 'Buy'
     },
+    hot() {
+      this.username = window.localStorage.getItem('name')
+      this.one_nav = '主页'
+      this.two_nav = '热门书籍'
+      this.currentView = 'Hot'
+    },
     // 用户确认登出，清除token信息并返回到登录页面
     logoutModalConfirmed() {
       window.localStorage.clear()
@@ -115,6 +123,7 @@ export default {
     Buy: Buy,
     MyRecord: MyRecord,
     ModifyUserInfo: ModifyUserInfo,
+    Hot: Hot,
   }
 }
 </script>
