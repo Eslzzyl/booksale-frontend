@@ -110,7 +110,7 @@ export default {
         obj.id = e.id
         obj.name = e.name
         obj.count = e.count
-        obj.sid = e.sid
+        obj.sid = e.sname
         obj.price = e.price
         obj.time = this.formatTimestamp(e.time)
         this.inboundInfo.push(obj)
