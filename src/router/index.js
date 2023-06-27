@@ -53,25 +53,7 @@ router.beforeEach((to, from, next) => {
   // 如果路由配置中没有定义标题，则使用默认标题
   document.title = to.meta.title || '在线书城';
 
-  if (to.path === '/' || to.path == '/register') {
-    next()
-  } else {
-    try {
-      const token = window.localStorage.getItem('token')
-      if (token === '') {
-        // 如果检查不通过，可以阻止跳转或者重定向到其他页面
-        Message.info('你必须先登录！')
-        next('/')
-      } else {
-        // 放通
-        next(to.path)
-      }
-    } catch (error) {
-      // 处理错误情况
-      console.error(error);
-      next(from.path);
-    }
-  }
+  next()
 });
 
 export default router
