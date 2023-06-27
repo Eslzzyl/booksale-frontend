@@ -15,7 +15,7 @@
               <span>欢迎你，系统管理员 {{ username }}</span>
             </Space>
           </div>
-          <MenuItem name="1-1" @click.native="getRecords"><span>购买记录表</span></MenuItem>
+          <MenuItem name="1-1" @click.native="getRecords"><span>销售记录表</span></MenuItem>
           <MenuItem name="1-2" @click.native="getBooks"><span>书籍表</span></MenuItem>
           <MenuItem name="1-3" @click.native="getSuppliers"><span>供应商表</span></MenuItem>
           <MenuItem name="1-4" @click.native="getPublishers"><span>出版社表</span></MenuItem>
@@ -72,6 +72,7 @@ export default {
   },
   mounted() {
     this.username = window.localStorage.getItem('contact')
+    this.getRecords()
   },
   methods: {
     updateToken(value) {

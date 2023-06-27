@@ -138,7 +138,7 @@ export default {
         obj.id = e.id
         obj.name = e.name
         obj.author = e.author
-        obj.count = e.count
+        obj.count = e.inventory
         obj.attribute = e.attribute
         obj.type = e.type
         obj.isbn = e.isbn
