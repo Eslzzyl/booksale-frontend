@@ -10,6 +10,9 @@
           <Input type="text" v-model="bookInfoInput.attribute" clearable placeholder="属性" />
           <Input type="text" v-model="bookInfoInput.type" clearable placeholder="类型" />
           <Input type="text" v-model="bookInfoInput.pname" clearable placeholder="出版社" />
+          <Select v-model="bookInfoInput.order" clearable style="width:200px">
+            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+         </Select>
         </Space>
       </FormItem>
       <FormItem>
@@ -39,12 +42,26 @@ export default {
     return {
       bookNum: 0,    // 图书的总量
       loading: false,
+      cityList: [{
+          value: 'priceA',
+          label: '价格升序'
+        }, {
+          value: 'priceD',
+          label: '价格降序'
+        }, {
+          value: 'inventoryA',
+          label: '库存升序'
+        }, {
+          value: 'inventoryD',
+          label: '库存降序'
+        }],
       bookInfoInput: {
         name: '',
         author: '',
         attribute: '',
         type: '',
         pname: '',
+        order:''
       },
       columns: [
         {
@@ -158,9 +175,10 @@ export default {
       let attribute = info.attribute
       let type = info.type
       let pname = info.pname
+      let order = info.order
       that.loading = true
 
-      const pack = await that.request(1, name, author, attribute, type, pname)
+      const pack = await that.request(1, name, author, attribute, type, pname,order)
       if (pack) {
         const books = pack.books
         const num = pack.num
@@ -223,8 +241,10 @@ export default {
       this.$Message.success('加购成功')
     },
     // 向后端发出请求
-    async request(page, name = '', author = '', attribute = '', type = '', pname = '') {
+    async request(page, name = '', author = '', attribute = '', type = '', pname = '', order = '') {
       // 默认一页放10本书
+      console.log("*")
+      console.log(order)
       let size = 10
       const that = this
       let sname = ''
@@ -239,6 +259,7 @@ export default {
             pname: pname,
             page: page,
             size: size,
+            order:order
           }
         );
         // 请求成功
@@ -261,8 +282,9 @@ export default {
       let type = that.bookInfoInput.type
       let pname = that.bookInfoInput.pname
       let sname = ''    // 用户无需关心供应商
-
-      let pack = await that.request(page, name, author, attribute, type, sname, pname)
+      let order = that.bookInfoInput.order
+      console.log(order + " why")
+      let pack = await that.request(page, name, author, attribute, type, pname, order)
       if (pack) {
         const books = pack.books
         const num = pack.num
