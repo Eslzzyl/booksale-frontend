@@ -69,7 +69,7 @@ export default {
       console.log(error);
     });
     // 请求第一页数据
-    const pack = that.request(1)
+    const pack = await that.request(1)
     if (pack) {
       that.updateInfo(pa)
     }
