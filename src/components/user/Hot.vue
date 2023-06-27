@@ -19,11 +19,6 @@
         hottestNum: 10,   // 最热10本书
         columns: [
           {
-            title: '书籍ID',
-            key: 'id',
-            resizable: true
-          },
-          {
             title: '书名',
             key: 'name',
             resizable: true
@@ -60,23 +55,8 @@
             resizable: true
           },
           {
-            title: '出版商ID',
-            key: 'pid',
-            resizable: true
-          },
-          {
-            title: '供应商ID',
-            key: 'sid',
-            resizable: true
-          },
-          {
-            title: '出版商',
+            title: '出版社',
             key: 'pname',
-            resizable: true
-          },
-          {
-            title: '供应商',
-            key: 'sname',
             resizable: true
           },
         ],
