@@ -65,7 +65,7 @@
     },
     methods: {
       async changePage (page) {
-        const that =this
+        const that = this
         const pack = await that.request(page)
         if (pack) {
           that.updateInfo(pack)
