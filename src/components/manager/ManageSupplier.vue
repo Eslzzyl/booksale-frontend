@@ -2,14 +2,31 @@
   <div class="container">
     <Space style="margin-bottom: 20px;">
       <h2>供应商管理</h2>
-      <Button id="insert-btn" type="primary" @click="insert">添加供应商</Button>
+      <Button id="insert-btn" type="primary" @click="insertModal = true">添加供应商</Button>
+      <Modal @on-ok="insert" v-model="insertModal">
+        <Space direction="vertical">
+          <Space><span>供应商ID</span><Input v-model="insertInfo.id" :placeholder="insertInfo.id"></Input></Space>
+          <Space><span>供应商</span><Input v-model="insertInfo.name" :placeholder="insertInfo.name"></Input></Space>
+          <Space><span>联系方式</span><Input v-model="insertInfo.contact" :placeholder="insertInfo.contact"></Input></Space>
+          <Space><span>地址</span><Input v-model="insertInfo.address" :placeholder="insertInfo.address"></Input></Space>
+        </Space>
+      </Modal>
     </Space>
     <Table border height="550" :columns="columns" :data="supplierInfo">
       <template #name="{ row }">
         <strong>{{ row.name }}</strong>
       </template>
       <template #action="{ row, index }">
-        <Button type="primary" size="small" style="margin-right: 5px" @click="modify(index)">修改</Button>
+        <Button type="primary" size="small" style="margin-right: 5px"
+          @click="currInfo = supplierInfo[index]; modifyModal = true">修改</Button>
+        <Modal @on-ok="modify" v-model="modifyModal">
+          <Space direction="vertical">
+            <Space><span>供应商ID</span><Input v-model="currInfo.id" :placeholder="currInfo.id"></Input></Space>
+            <Space><span>供应商</span><Input v-model="currInfo.name" :placeholder="currInfo.name"></Input></Space>
+            <Space><span>联系方式</span><Input v-model="currInfo.contact" :placeholder="currInfo.contact"></Input></Space>
+            <Space><span>地址</span><Input v-model="currInfo.address" :placeholder="currInfo.address"></Input></Space>
+          </Space>
+        </Modal>
         <Button type="error" size="small" @click="remove(index)">删除</Button>
       </template>
     </Table>
@@ -27,6 +44,20 @@ export default {
     return {
       supplierNum: 0,
       supplierInfo: [],
+      modifyModal: false,
+      insertModal: false,
+      currInfo: {
+        id: '',
+        name: '',
+        contact: '',
+        address: '',
+      },
+      insertInfo: {
+        id: '',
+        name: '',
+        contact: '',
+        address: '',
+      },
       columns: [
         {
           title: 'ID',
@@ -120,7 +151,7 @@ export default {
     },
     remove(index) {
       let suppliers = []
-      suppliers.push(this.supplierInfo[index].contact)
+      suppliers.push(this.supplierInfo[index].id)
       axios.post('/manager/suppliers/delete', { suppliers }).then((response) => {
         if (response.data.code === 1) {
           this.supplierInfo.splice(index, 1)
@@ -134,16 +165,15 @@ export default {
         console.log(error)
       })
     },
-    modify(index) {
-      let result = this.getInfoOfIndex(index)
-      let code = result.code
-      if (code === 0) {
+    modify() {
+      let id = this.currInfo.id
+      let name = this.currInfo.name
+      let contact = this.currInfo.contact
+      let address = this.currInfo.address
+      if (id === '' || name === '' || contact === '' || address === '') {
+        this.$Message.error('请填写完整的信息')
         return
       }
-      let id = result.id
-      let name = result.name
-      let contact = result.contact
-      let address = result.address
       axios.post('/manager/suppliers/change', { id, name, contact, address }).then((response) => {
         if (response.data.code === 1) {
           this.$Message.success('修改供应商信息成功！')
@@ -156,17 +186,20 @@ export default {
       })
     },
     insert() {
-      let result = this.getInfo()
-      let code = result.code
-      if (code === 0) {
+      let id = this.insertInfo.id
+      let name = this.insertInfo.name
+      let contact = this.insertInfo.contact
+      let address = this.insertInfo.address
+      if (id === '' || name === '' || contact === '' || address === '') {
+        this.$Message.error('请填写完整的信息')
         return
       }
-      let id = result.id
-      let name = result.name
-      let contact = result.contact
-      let address = result.address
       axios.post('/manager/suppliers/add', { id, name, contact, address }).then((response) => {
         if (response.data.code === 1) {
+          this.supplierNum += 1
+          this.supplierInfo.push({
+            id, name, contact, address
+          })
           this.$Message.success('添加供应商成功！')
         } else {
           this.$Message.error('添加供应商失败！')
@@ -176,139 +209,6 @@ export default {
         console.log(error)
       })
     },
-    getInfoOfIndex(index) {
-      const id = this.supplierInfo[index].id
-      let name = this.supplierInfo[index].name
-      let contact = this.supplierInfo[index].contact
-      let address = this.supplierInfo[index].address
-      this.$Modal.confirm({
-        render: (h) => {
-          return h(Space, {direction: 'vertical'}, [
-            h(Space, [
-              h('span', ['供应商ID']),
-              h(Input, {
-                modelValue: id,
-                placeholder: id,
-                'disabled': '',
-              })
-            ]),
-            h(Space, [
-              h('span', ['供应商']),
-              h(Input, {
-                modelValue: name,
-                placeholder: name,
-                'onInput': (event) => {
-                  name = event.target.value;
-                }
-              })
-            ]),
-            h(Space, [
-              h('span', ['联系方式']),
-              h(Input, {
-                modelValue: contact,
-                placeholder: contact,
-                'onInput': (event) => {
-                  contact = event.target.value;
-                }
-              })
-            ]),
-            h(Space, [
-              h('span', ['地址']),
-              h(Input, {
-                modelValue: address,
-                placeholder: address,
-                'onInput': (event) => {
-                  address = event.target.value;
-                }
-              })
-            ])
-          ])
-        }
-      })
-      if (name === '' || contact === '' || address === '') {
-        this.$Message.error('请填写完整信息！')
-        return {
-          code: 0,
-          id: null,
-          name: null,
-          contact: null,
-          address: null
-        }
-      }
-      return {
-        code: 1,
-        id: id,
-        name: name,
-        contact: contact,
-        address: address
-      }
-    },
-    getInfoOfNew() {
-      let id = ''
-      let name = ''
-      let contact = ''
-      let address = ''
-      this.$Modal.confirm({
-        render: (h) => {
-          return h(Space, {direction: 'vertical'}, [
-            h(Space, [
-              h('span', ['供应商ID']),
-              h(Input, {
-                modelValue: id,
-                placeholder: id,
-              })
-            ]),
-            h(Space, [
-              h('span', ['供应商']),
-              h(Input, {
-                modelValue: name,
-                placeholder: name,
-                'onInput': (event) => {
-                  name = event.target.value;
-                }
-              })
-            ]),
-            h(Space, [
-              h('span', ['联系方式']),
-              h(Input, {
-                modelValue: contact,
-                placeholder: contact,
-                'onInput': (event) => {
-                  contact = event.target.value;
-                }
-              })
-            ]),
-            h(Space, [
-              h('span', ['地址']),
-              h(Input, {
-                modelValue: address,
-                placeholder: address,
-                'onInput': (event) => {
-                  address = event.target.value;
-                }
-              })
-            ])
-          ])
-        }
-      })
-      if (id == '' || name === '' || contact === '' || address === '') {
-        this.$Message.error('请填写完整信息！')
-        return {
-          code: 0,
-          id: null,
-          name: null,
-          contact: null,
-          address: null
-        }
-      }
-      return {
-        code: 1,
-        id: id,
-        name: name,
-        contact: contact,
-        address: address
-      }
-    }
   }
 }
 </script>
