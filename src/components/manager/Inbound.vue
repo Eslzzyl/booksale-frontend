@@ -104,7 +104,7 @@ export default {
       }
     },
     updateItem(pack) {
-      this.userInfo = []
+      this.inboundInfo = []
       pack.forEach((e) => {
         let obj = {}
         obj.id = e.id
