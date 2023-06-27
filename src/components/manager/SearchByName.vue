@@ -2,7 +2,7 @@
   <div class="container">
     <Space direction="vertical" style="margin-bottom: 10px;">
       <h2>按书名查询销售记录</h2>
-      <Input search enter-button v-model="bookName" placeholder="输入书名..." @on-search="search"/>
+      <Input search enter-button v-model="bookName" placeholder="输入书名..." @on-search="search" />
     </Space>
     <Table border height="550" :columns="columns" :data="currSellInfo">
       <template #name="{ row }">
@@ -33,8 +33,12 @@ export default {
           key: 'name',
         },
         {
-          title: 'profit',
-          key: '利润'
+          title: '总销售额',
+          key: 'price',
+        },
+        {
+          title: '利润',
+          key: 'profit'
         }
       ]
     }
@@ -81,6 +85,7 @@ export default {
       pack.forEach((e) => {
         let obj = {}
         obj.bid = e.bid
+        obj.name = this.bookName
         obj.price = e.price
         obj.profit = e.profit
         this.sellInfo.push(obj)
