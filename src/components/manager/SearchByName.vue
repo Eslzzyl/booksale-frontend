@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <Space direction="vertical">
+    <Space direction="vertical" style="margin-bottom: 10px;">
       <h2>按书名查询销售记录</h2>
-      <Input search enter-button v-model="bookName" placeholder="输入书名..." @on-ok="search"/>
+      <Input search enter-button v-model="bookName" placeholder="输入书名..." @on-search="search"/>
     </Space>
     <Table border height="550" :columns="columns" :data="currSellInfo">
       <template #name="{ row }">
@@ -14,13 +14,15 @@
 </template>
 
 <script>
+import axios from '@/axiosInstance.js'
+
 export default {
   data() {
     return {
       bookName: '',
       sellInfo: [],
       currSellInfo: [],
-      sellNum: '',
+      sellNum: 0,
       columns: [
         {
           title: '书籍ID',
@@ -87,3 +89,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+h2 {
+  color: #2D8CF0;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+</style>

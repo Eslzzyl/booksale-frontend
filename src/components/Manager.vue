@@ -17,9 +17,10 @@
           </div>
           <MenuItem name="1-1" @click.native="lookRecordByBook"><span>销售记录-按书统计</span></MenuItem>
           <MenuItem name="1-2" @click.native="lookRecordByMonth"><span>销售记录-按月统计</span></MenuItem>
-          <MenuItem name="1-3" @click.native="manageUser"><span>用户管理</span></MenuItem>
-          <MenuItem name="1-4" @click.native="manageSupplier"><span>供应商管理</span></MenuItem>
-          <MenuItem name="1-5" @click.native="lookInbound"><span>入库信息管理</span></MenuItem>
+          <MenuItem name="1-3" @click.native="searchRecordByName"><span>销售记录-按书名查询</span></MenuItem>
+          <MenuItem name="1-4" @click.native="manageUser"><span>用户管理</span></MenuItem>
+          <MenuItem name="1-5" @click.native="manageSupplier"><span>供应商管理</span></MenuItem>
+          <MenuItem name="1-6" @click.native="lookInbound"><span>入库信息管理</span></MenuItem>
         </Submenu>
       </Menu>
       </Col>
@@ -56,6 +57,7 @@
 <script>
 import SellRecordByBook from './manager/SellRecordByBook.vue'
 import SellRecordByMonth from './manager/SellRecordByMonth.vue'
+import SearchByName from './manager/SearchByName.vue'
 import ManageUser from './manager/ManageUser.vue'
 import ManageSupplier from './manager/ManageSupplier.vue'
 import Inbound from './manager/Inbound.vue'
@@ -90,6 +92,11 @@ export default {
       this.two_nav = '销售记录-按月统计'
       this.currentView = 'SellRecordByMonth'
     },
+    searchRecordByName() {
+      this.one_nav = '主页'
+      this.two_nav = '销售记录-按书名查询'
+      this.currentView = 'SearchByName'
+    },
     manageUser() {
       this.one_nav = '主页'
       this.two_nav = '用户管理'
@@ -120,6 +127,7 @@ export default {
     Button,
     SellRecordByBook: SellRecordByBook,
     SellRecordByMonth: SellRecordByMonth,
+    SearchByName: SearchByName,
     ManageUser: ManageUser,
     ManageSupplier: ManageSupplier,
     Inbound: Inbound
