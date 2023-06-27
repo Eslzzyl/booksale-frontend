@@ -20,6 +20,8 @@
 <script>
 import axios from '@/axiosInstance.js'
 
+import { Space, Input } from 'view-ui-plus'
+
 export default {
   data() {
     return {
@@ -132,7 +134,7 @@ export default {
       })
     },
     modify(index) {
-      let result = this.getInfo()
+      let result = this.getInfoOfIndex(index)
       let code = result.code
       if (code === 0) {
         return
@@ -152,12 +154,13 @@ export default {
         console.log(error)
       })
     },
-    insert(index) {
+    insert() {
       let result = this.getInfo()
       let code = result.code
       if (code === 0) {
         return
       }
+      let id = result.id
       let name = result.name
       let contact = result.contact
       let address = result.address
@@ -172,16 +175,16 @@ export default {
         console.log(error)
       })
     },
-    getInfo() {
+    getInfoOfIndex(index) {
       const id = this.supplierInfo[index].id
       let name = this.supplierInfo[index].name
       let contact = this.supplierInfo[index].contact
       let address = this.supplierInfo[index].address
       this.$Modal.confirm({
         render: (h) => {
-          return h(Space, {direction: 'vertical', size: large}, [
+          return h(Space, {direction: 'vertical'}, [
             h(Space, [
-              h(span, ['供应商ID']),
+              h('span', ['供应商ID']),
               h(Input, {
                 modelValue: id,
                 placeholder: id,
@@ -189,7 +192,7 @@ export default {
               })
             ]),
             h(Space, [
-              h(span, ['供应商']),
+              h('span', ['供应商']),
               h(Input, {
                 modelValue: name,
                 placeholder: name,
@@ -199,7 +202,7 @@ export default {
               })
             ]),
             h(Space, [
-              h(span, ['联系方式']),
+              h('span', ['联系方式']),
               h(Input, {
                 modelValue: contact,
                 placeholder: contact,
@@ -209,7 +212,7 @@ export default {
               })
             ]),
             h(Space, [
-              h(span, ['地址']),
+              h('span', ['地址']),
               h(Input, {
                 modelValue: address,
                 placeholder: address,
@@ -222,6 +225,72 @@ export default {
         }
       })
       if (name === '' || contact === '' || address === '') {
+        this.$Message.error('请填写完整信息！')
+        return {
+          code: 0,
+          id: null,
+          name: null,
+          contact: null,
+          address: null
+        }
+      }
+      return {
+        code: 1,
+        id: id,
+        name: name,
+        contact: contact,
+        address: address
+      }
+    },
+    getInfoOfNew() {
+      let id = ''
+      let name = ''
+      let contact = ''
+      let address = ''
+      this.$Modal.confirm({
+        render: (h) => {
+          return h(Space, {direction: 'vertical'}, [
+            h(Space, [
+              h('span', ['供应商ID']),
+              h(Input, {
+                modelValue: id,
+                placeholder: id,
+              })
+            ]),
+            h(Space, [
+              h('span', ['供应商']),
+              h(Input, {
+                modelValue: name,
+                placeholder: name,
+                'onInput': (event) => {
+                  name = event.target.value;
+                }
+              })
+            ]),
+            h(Space, [
+              h('span', ['联系方式']),
+              h(Input, {
+                modelValue: contact,
+                placeholder: contact,
+                'onInput': (event) => {
+                  contact = event.target.value;
+                }
+              })
+            ]),
+            h(Space, [
+              h('span', ['地址']),
+              h(Input, {
+                modelValue: address,
+                placeholder: address,
+                'onInput': (event) => {
+                  address = event.target.value;
+                }
+              })
+            ])
+          ])
+        }
+      })
+      if (id == '' || name === '' || contact === '' || address === '') {
         this.$Message.error('请填写完整信息！')
         return {
           code: 0,
