@@ -65,7 +65,7 @@ export default {
     return {
       username: '',
       one_nav: '主页',
-      two_nav: '购买记录表',
+      two_nav: '销售记录',
       currentView: 'Record',
       logoutModal: false,
     }

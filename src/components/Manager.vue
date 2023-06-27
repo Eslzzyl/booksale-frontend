@@ -74,6 +74,7 @@ export default {
   },
   mounted() {
     this.username = window.localStorage.getItem('contact')
+    this.lookRecordByBook()
   },
   methods: {
     updateToken(value) {
