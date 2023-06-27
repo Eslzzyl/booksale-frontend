@@ -119,11 +119,12 @@ export default {
       })
     },
     remove(index) {
-      this.supplierInfo.splice(index, 1)
       let suppliers = []
       suppliers.push(this.supplierInfo[index].contact)
-      axios.post('/manage/suppliers/delete', { suppliers }).then((response) => {
+      axios.post('/manager/suppliers/delete', { suppliers }).then((response) => {
         if (response.data.code === 1) {
+          this.supplierInfo.splice(index, 1)
+          this.supplierNum -= 1
           this.$Message.success('删除供应商成功！')
         } else {
           this.$Message.error('删除供应商失败！')
@@ -143,7 +144,7 @@ export default {
       let name = result.name
       let contact = result.contact
       let address = result.address
-      axios.post('/manage/suppliers/change', { id, name, contact, address }).then((response) => {
+      axios.post('/manager/suppliers/change', { id, name, contact, address }).then((response) => {
         if (response.data.code === 1) {
           this.$Message.success('修改供应商信息成功！')
         } else {
@@ -164,7 +165,7 @@ export default {
       let name = result.name
       let contact = result.contact
       let address = result.address
-      axios.post('/manage/suppliers/add', { id, name, contact, address }).then((response) => {
+      axios.post('/manager/suppliers/add', { id, name, contact, address }).then((response) => {
         if (response.data.code === 1) {
           this.$Message.success('添加供应商成功！')
         } else {
@@ -188,7 +189,7 @@ export default {
               h(Input, {
                 modelValue: id,
                 placeholder: id,
-                disabled,
+                'disabled': '',
               })
             ]),
             h(Space, [
