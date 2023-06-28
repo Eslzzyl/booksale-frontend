@@ -1,5 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import { Message } from 'view-ui-plus'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import Login from '@/components/Login.vue'
 import User from '@/components/User.vue'
 import Manager from '@/components/Manager.vue'
@@ -7,7 +6,7 @@ import System from '@/components/System.vue'
 import Register from '@/components/Register.vue'
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: [
     {
       path: '/',
