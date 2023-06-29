@@ -6,7 +6,7 @@
 
 技术：Vue 3 + View UI Plus
 
-这是合肥工业大学2023《数据库系统课程设计》项目的前端部分。后端部分在[这里](https://github.com/katsss188/BookSellerSystem)。
+这是合肥工业大学2023《数据库系统课程设计》项目的前端部分。后端部分在[这里](https://github.com/katsss188/BookSellerSystem_new)。
 
 这个项目是仓促写完的，Vue属于速成，因此不建议作为参考。
 
