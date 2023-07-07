@@ -174,9 +174,27 @@ export default {
         this.loading = false
       }
     },
+    // 验证账号格式是否合法，GPT生成
     validateContact() {
-      // 验证账号格式是否合法，代码待补
-      return true;
+      // 这个正则表达式可以匹配常见的电子邮箱地址格式，包括用户名部分由字母、数字、下划线、连字符、点号组成，域名部分由字母、连字符组成，以及可选的顶级域名部分。
+      const emailRegex = /^[\w.-]+@[a-zA-Z_-]+?(?:\.[a-zA-Z]{2,})+$/;
+      // 这个正则表达式可以匹配中国大陆的手机号码格式，以1开头的11位数字。
+      const phoneRegex = /^1[3-9]\d{9}$/;
+      const contact = this.formItem.contact;
+      if (emailRegex.test(contact) || phoneRegex.test(contact)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    //验证年龄是否合法
+    validateAge() {
+      const age = this.formItem.age;
+      if (age > 0 && age < 120) {
+        return true;
+      } else {
+        return false;
+      }
     },
     login() {
       this.$router.replace('/')

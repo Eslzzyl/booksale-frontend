@@ -176,6 +176,15 @@ export default {
         console.log(error)
         this.loading = false
       });
+    },
+    //验证年龄是否合法
+    validateAge() {
+      const age = this.formItem.age;
+      if (age > 0 && age < 120) {
+        return true;
+      } else {
+        return false;
+      }
     }
   },
 }

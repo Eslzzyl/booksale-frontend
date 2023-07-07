@@ -174,6 +174,18 @@ export default {
         this.$Message.error('请填写完整的信息')
         return
       }
+      if (!this.validateContact(contact)) {
+        this.$Message.error('联系方式必须是一个合法的邮箱地址或电话号码！')
+        return
+      }
+      if (this.supplierInfo.some((e) => e.id === id)) {
+        this.$Message.error('该供应商已存在！')
+        return
+      }
+      if (!this.validateID(id)) {
+        this.$Message.error('ID必须是一个正数！')
+        return
+      }
       axios.post('/manager/suppliers/change', { id, name, contact, address }).then((response) => {
         if (response.data.code === 1) {
           this.$Message.success('修改供应商信息成功！')
@@ -194,6 +206,18 @@ export default {
         this.$Message.error('请填写完整的信息')
         return
       }
+      if (!this.validateContact(contact)) {
+        this.$Message.error('联系方式必须是一个合法的邮箱地址或电话号码！')
+        return
+      }
+      if (this.supplierInfo.some((e) => e.id === id)) {
+        this.$Message.error('该供应商已存在！')
+        return
+      }
+      if (!this.validateID(id)) {
+        this.$Message.error('ID必须是一个正数！')
+        return
+      }
       axios.post('/manager/suppliers/add', { id, name, contact, address }).then((response) => {
         if (response.data.code === 1) {
           this.supplierNum += 1
@@ -209,6 +233,26 @@ export default {
         console.log(error)
       })
     },
+    // 验证账号格式是否合法，GPT生成
+    validateContact(contact) {
+      // 这个正则表达式可以匹配常见的电子邮箱地址格式，包括用户名部分由字母、数字、下划线、连字符、点号组成，域名部分由字母、连字符组成，以及可选的顶级域名部分。
+      const emailRegex = /^[\w.-]+@[a-zA-Z_-]+?(?:\.[a-zA-Z]{2,})+$/;
+      // 这个正则表达式可以匹配中国大陆的手机号码格式，以1开头的11位数字。
+      const phoneRegex = /^1[3-9]\d{9}$/;
+      if (emailRegex.test(contact) || phoneRegex.test(contact)) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    validateID(id) {
+      const numberRegex = /^[1-9][0-9]*$/;
+      if (numberRegex.test(id)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   }
 }
 </script>

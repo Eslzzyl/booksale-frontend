@@ -72,6 +72,7 @@ export default {
     },
     // 向后端发出请求
     async request(page) {
+      const that = this;
       try {
         // 默认一页放10条记录
         let size = 10

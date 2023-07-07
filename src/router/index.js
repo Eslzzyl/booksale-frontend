@@ -52,31 +52,31 @@ router.beforeEach((to, from, next) => {
   // 如果路由配置中没有定义标题，则使用默认标题
   document.title = to.meta.title || '在线书城';
 
-  if (to.path !== '/') {
-    if (to.path === '/register') {
-      next()
-    } else {
-      const token = localStorage.getItem('token')
-      if (token === null || token === '') {
-        next('/')
-      } else {
-        const userType = localStorage.getItem('type')
-        if (userType === 'user') {
-          if (to.path === '/manager' || to.path === '/system') {
-            next('/user')
-          } else {
-            next()
-          }
-        } else {
-          if (to.path === '/user') {
-            next('/manager')
-          } else {
-            next()
-          }
-        }
-      }
-    }
-  }
+  // if (to.path !== '/') {
+  //   if (to.path === '/register') {
+  //     next()
+  //   } else {
+  //     const token = localStorage.getItem('token')
+  //     if (token === null || token === '') {
+  //       next('/')
+  //     } else {
+  //       const userType = localStorage.getItem('type')
+  //       if (userType === 'user') {
+  //         if (to.path === '/manager' || to.path === '/system') {
+  //           next('/user')
+  //         } else {
+  //           next()
+  //         }
+  //       } else {
+  //         if (to.path === '/user') {
+  //           next('/manager')
+  //         } else {
+  //           next()
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
   next()
 });
 

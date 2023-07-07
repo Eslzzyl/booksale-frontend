@@ -161,6 +161,14 @@ export default {
         this.$Message.error('请填写完整的信息')
         return
       }
+      if (isNaN(inventory) || isNaN(price)) {
+        this.$Message.error('数量和价格必须为数字')
+        return
+      }
+      if (inventory <= 0 || price <= 0) {
+        this.$Message.error('数量和价格必须大于0')
+        return
+      }
       axios.post('/manager/inbound/addBook', { id, name, author, inventory, type, attribute, isbn, price, sid, pid }).then((response) => {
         if (response.data.code === 1) {
           this.inboundNum += 1
